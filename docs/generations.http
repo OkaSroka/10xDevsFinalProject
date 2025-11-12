@@ -1,0 +1,81 @@
+@baseUrl = http://localhost:4321
+@authToken = SUPABASE_AUTH_TOKEN
+
+###
+# Create generation with valid source text (minimum length)
+POST {{baseUrl}}/api/generations
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "source_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat."
+}
+
+###
+# Create generation with rich educational content
+POST {{baseUrl}}/api/generations
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "source_text": "Photosynthesis is the process by which green plants and some other organisms use sunlight to synthesize foods from carbon dioxide and water. Photosynthesis in plants generally involves the green pigment chlorophyll and generates oxygen as a byproduct. The process can be divided into two main stages: the light-dependent reactions and the light-independent reactions (Calvin cycle). During the light-dependent reactions, which take place in the thylakoid membranes, chlorophyll absorbs energy from sunlight. This energy is used to split water molecules into hydrogen and oxygen. The oxygen is released as a waste product, while the hydrogen is used in the subsequent reactions. The light-independent reactions occur in the stroma of the chloroplast. Here, carbon dioxide from the atmosphere is converted into glucose through a series of reactions known as the Calvin cycle. This glucose serves as the primary energy source for the plant and is also used to create other organic compounds. Photosynthesis is crucial for life on Earth as it is the primary source of oxygen in the atmosphere and forms the base of the food chain. Understanding photosynthesis has important implications for agriculture, climate science, and renewable energy research. Scientists continue to study the intricate mechanisms of photosynthesis to develop more efficient crop varieties and explore artificial photosynthesis for clean energy production."
+}
+
+###
+# Validation failure: source_text too short (less than 1000 characters)
+POST {{baseUrl}}/api/generations
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "source_text": "This text is way too short for generation."
+}
+
+###
+# Validation failure: source_text too long (more than 10000 characters)
+POST {{baseUrl}}/api/generations
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "source_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit... (imagine this repeated to exceed 10000 characters)"
+}
+
+###
+# Validation failure: missing source_text field
+POST {{baseUrl}}/api/generations
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "wrong_field": "This should fail validation"
+}
+
+###
+# Validation failure: invalid JSON
+POST {{baseUrl}}/api/generations
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "source_text": "Valid text but invalid JSON syntax
+}
+
+###
+# Authentication failure: missing token
+POST {{baseUrl}}/api/generations
+Content-Type: application/json
+
+{
+  "source_text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris. Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi. Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat."
+}
+
+###
+# Edge case: exactly 1000 characters (minimum valid length)
+POST {{baseUrl}}/api/generations
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "source_text": "a123456789b123456789c123456789d123456789e123456789f123456789g123456789h123456789i123456789j123456789k123456789l123456789m123456789n123456789o123456789p123456789q123456789r123456789s123456789t123456789u123456789v123456789w123456789x123456789y123456789z123456789A123456789B123456789C123456789D123456789E123456789F123456789G123456789H123456789I123456789J123456789K123456789L123456789M123456789N123456789O123456789P123456789Q123456789R123456789S123456789T123456789U123456789V123456789W123456789X123456789Y123456789Z123456789a123456789b123456789c123456789d123456789e123456789f123456789g123456789h123456789i123456789j123456789k123456789l123456789m123456789n123456789o123456789p123456789q123456789r123456789s123456789t123456789u123456789v123456789w123456789x123456789y123456789z123456789A123456789B123456789C123456789D123456789E123456789F123456789G123456789H123456789I123456789J123456789K123456789L123456789M123456789N123456789O123456789P123456789Q123456789R123456789S123456789T123456789U123456789V123456789W123456789X123456789Y123456789Z123456789end"
+}

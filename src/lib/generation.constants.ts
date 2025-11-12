@@ -1,0 +1,2 @@
+export const SOURCE_TEXT_MIN_LENGTH = 1000;
+export const SOURCE_TEXT_MAX_LENGTH = 10000;

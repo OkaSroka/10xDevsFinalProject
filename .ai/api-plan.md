@@ -61,6 +61,7 @@
 - **POST `/flashcards`**
 
   - **Description**: Create one or more flashcards (manually or from AI generation).
+  - **Limits**: Up to 50 flashcards can be submitted per request; batches beyond this size are rejected with `400 Bad Request`.
   - **Request JSON**:
     ```json
     {
@@ -106,7 +107,16 @@
     - `back` maximum length: 500 characters.
     - `source`: Must be one of `ai-full`, `ai-edited`, or `manual`.
     - `generation_id`: Required for `ai-full` and `ai-edited` sources, must be null for `manual` source.
+    - Each flashcard is trimmed server-side; empty strings after trimming remain invalid.
   - **Errors**: 400 for invalid inputs, including validation errors for any flashcard in the array.
+    - Validation responses include a `details` array describing per-field issues.
+    - When referenced `generation_id` values do not belong to the caller, the API responds with `400` and includes the missing IDs in `details`.
+  - **Recommended automated tests**:
+    - Happy path with mixed manual and AI flashcards linked to the caller’s generation.
+    - Batch rejection when `flashcards.length > 50`.
+    - Payload trimming/empty strings to ensure validation catches whitespace-only fronts/backs.
+    - Ownership enforcement when `generation_id` points to another user.
+    - Auth failure scenarios (missing/expired Supabase token).
 
 - **PUT `/flashcards/{id}`**
 
@@ -125,17 +135,17 @@
 - **POST `/generations`**
 
   - **Description**: Initiate the AI generation process for flashcards proposals based on user-provided text.
-  - **Request JSON**:
+  - **Request JSON** (_Zod schema defined in `src/pages/api/generations.ts`_):
     ```json
     {
       "source_text": "User provided text (1000 to 10000 characters)"
     }
     ```
   - **Business Logic**:
-    - Validate that `source_text` length is between 1000 and 10000 characters.
-    - Call the AI service to generate flashcards proposals.
-    - Store the generation metadata and return flashcard proposals to the user.
-  - **Response JSON**:
+    - Validate that `source_text` length is between 1000 and 10000 characters (see `GenerationCreateCommand` in `src/types.ts`).
+    - Call the AI service (currently `GenerationService.mockAiGeneration`) to generate flashcards proposals.
+    - Store generation metadata (`model`, `generated_count`, `generation_duration`, `source_text_hash`, `source_text_length`, timestamps) and return proposals to the user.
+  - **Response JSON** (_matches `CreateGenerationResponseDto`_):
     ```json
     {
       "generation_id": 123,
@@ -149,31 +159,110 @@
       "generated_count": 5
     }
     ```
-  - **Errors**:
-    - 400: Invalid input.
-    - 500: AI service errors (logs recorded in `generation_error_logs`).
+  - **Status Codes**:
+    - `201 Created` on success.
+    - `400 Bad Request` for invalid payloads (malformed JSON, missing `source_text`, length outside range).
+    - `401 Unauthorized` when Supabase Auth validation fails (once enabled).
+    - `500 Internal Server Error` when AI or DB persistence fails. Every AI failure must be logged into `generation_error_logs`.
 
 - **GET `/generations`**
 
-  - **Description**: Retrieve a list of generation requests for the authenticated user.
-  - **Query Parameters**: Supports pagination as needed.
-  - **Response JSON**: List of generation objects with metadata.
+  - **Description**: Retrieve all generation runs that belong to the authenticated user, ordered by `created_at` descending by default.
+  - **Query Parameters**:
+    - `page` (default `1`) and `limit` (default `10`, max `50`) for pagination.
+    - `model` (optional) to filter by AI model string.
+    - `min_generated_count` / `max_generated_count` (optional) to filter by proposal volume.
+    - `source_text_hash` (optional) to inspect a specific source submission.
+    - `sort` (default `created_at`) and `order` (`asc` or `desc`).
+  - **Response JSON** (_array of `GenerationSummaryDto` objects; user-owned fields only_):
+    ```json
+    {
+      "data": [
+        {
+          "id": 123,
+          "model": "openrouter/anthropic/claude-3.5-sonnet",
+          "generated_count": 5,
+          "generation_duration": 1875,
+          "source_text_hash": "a4d12e...",
+          "source_text_length": 2048,
+          "accepted_unedited_count": 3,
+          "accepted_edited_count": 1,
+          "created_at": "2025-11-12T20:21:00.000Z",
+          "updated_at": "2025-11-12T20:21:00.000Z"
+        }
+      ],
+      "pagination": { "page": 1, "limit": 10, "total": 27 }
+    }
+    ```
+  - **Errors**:
+    - `401 Unauthorized` if the bearer token is missing/invalid.
+    - `400 Bad Request` for invalid pagination arguments.
 
 - **GET `/generations/{id}`**
-  - **Description**: Retrieve detailed information of a specific generation including its flashcards.
-  - **Response JSON**: Generation details and associated flashcards.
-  - **Errors**: 404 Not Found.
+  - **Description**: Retrieve one generation plus all flashcards linked through `generation_id`. Combines `GenerationSummaryDto` with an array of `FlashcardDetailDto`.
+  - **Response JSON**:
+    ```json
+    {
+      "generation": {
+        "id": 123,
+        "model": "openrouter/anthropic/claude-3.5-sonnet",
+        "generated_count": 5,
+        "generation_duration": 1875,
+        "source_text_hash": "a4d12e...",
+        "source_text_length": 2048,
+        "accepted_unedited_count": 3,
+        "accepted_edited_count": 1,
+        "created_at": "2025-11-12T20:21:00.000Z",
+        "updated_at": "2025-11-12T20:21:00.000Z"
+      },
+      "flashcards": [
+        {
+          "id": 1,
+          "front": "Question",
+          "back": "Answer",
+          "source": "ai-full",
+          "generation_id": 123,
+          "created_at": "2025-11-12T20:21:05.000Z",
+          "updated_at": "2025-11-12T20:21:05.000Z"
+        }
+      ]
+    }
+    ```
+  - **Errors**:
+    - `401 Unauthorized` if the caller is not authenticated.
+    - `404 Not Found` when the generation either does not exist or belongs to another user (protected via RLS).
 
 ### 2.4. Generation Error Logs
 
 _(Typically used internally or by admin users)_
 
 - **GET `/generation-error-logs`**
-  - **Description**: Retrieve error logs for AI flashcard generation for the authenticated user or admin.
-  - **Response JSON**: List of error log objects.
+  - **Description**: Retrieve error logs for AI flashcard generation for the authenticated user or admin. Values come directly from `generation_error_logs` table; `user_id` is stripped in API responses (`GenerationErrorLogDto`).
+  - **Query Parameters**:
+    - `page` / `limit` for pagination (defaults mirror `/generations`).
+    - `model`, `error_code`, `source_text_hash`, or `date_from` / `date_to` for filtering investigations.
+    - `order` (`asc` / `desc`, default `desc`) applied to `created_at`.
+  - **Response JSON**:
+    ```json
+    {
+      "data": [
+        {
+          "id": 999,
+          "error_code": "AI_REQUEST_FAILED",
+          "error_message": "Anthropic timeout",
+          "model": "openrouter/anthropic/claude-3.5-sonnet",
+          "source_text_hash": "a4d12e...",
+          "source_text_length": 2048,
+          "created_at": "2025-11-12T20:21:02.000Z"
+        }
+      ],
+      "pagination": { "page": 1, "limit": 20, "total": 4 }
+    }
+    ```
   - **Errors**:
-    - 401 Unauthorized if token is invalid.
-    - 403 Forbidden if access is restricted to admin users.
+    - `401 Unauthorized` if token is invalid.
+    - `403 Forbidden` when endpoint is limited to admins/support staff.
+    - `400 Bad Request` for invalid filters (e.g., `date_from` after `date_to`).
 
 ## 3. Authentication and Authorization
 

@@ -49,6 +49,10 @@ npm run build
 - `npm run lint` - Run ESLint
 - `npm run lint:fix` - Fix ESLint issues
 
+## API Testing Helpers
+
+- `docs/flashcards.http` – VS Code REST Client compatible collection with ready-to-run POST `/api/flashcards` scenarios (manual creation, AI-linked batches, and validation failures). Update the `@baseUrl` and `@authToken` variables before executing requests.
+
 ## Project Structure
 
 ```md

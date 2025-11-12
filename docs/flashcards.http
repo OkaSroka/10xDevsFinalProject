@@ -1,0 +1,65 @@
+@baseUrl = http://localhost:4321
+@authToken = SUPABASE_AUTH_TOKEN
+
+###
+# Create manual flashcards (no generation link)
+POST {{baseUrl}}/api/flashcards
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "flashcards": [
+    {
+      "front": "What is the project stack?",
+      "back": "Astro 5 + React 19 + Supabase.",
+      "source": "manual",
+      "generation_id": null
+    },
+    {
+      "front": "Max manual batch size?",
+      "back": "50 flashcards per request.",
+      "source": "manual",
+      "generation_id": null
+    }
+  ]
+}
+
+###
+# Create AI flashcards linked to an existing generation
+POST {{baseUrl}}/api/flashcards
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "flashcards": [
+    {
+      "front": "Explain RLS purpose.",
+      "back": "Row Level Security ensures users access only their own rows.",
+      "source": "ai-full",
+      "generation_id": 123
+    },
+    {
+      "front": "When is generation_id required?",
+      "back": "Every ai-full or ai-edited flashcard must reference the source generation.",
+      "source": "ai-edited",
+      "generation_id": 123
+    }
+  ]
+}
+
+###
+# Validation failure example (missing generation ownership)
+POST {{baseUrl}}/api/flashcards
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "flashcards": [
+    {
+      "front": "Invalid generation link",
+      "back": "This request should fail because generation_id is not owned by the caller.",
+      "source": "ai-full",
+      "generation_id": 999999
+    }
+  ]
+}
