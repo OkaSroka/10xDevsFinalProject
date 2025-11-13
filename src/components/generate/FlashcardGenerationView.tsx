@@ -63,13 +63,13 @@ function validateDraft(
   if (!trimmedFront) {
     errors.front = "Przod fiszki nie moze byc pusty.";
   } else if (trimmedFront.length > FLASHCARD_FRONT_MAX_LENGTH) {
-    errors.front = `Przod moze miec maks ${FLASHCARD_FRONT_MAX_LENGTH} znakow.`;
+    errors.front = `Przód może mieć maks ${FLASHCARD_FRONT_MAX_LENGTH} znaków.`;
   }
 
   if (!trimmedBack) {
     errors.back = "Tyl fiszki nie moze byc pusty.";
   } else if (trimmedBack.length > FLASHCARD_BACK_MAX_LENGTH) {
-    errors.back = `Tyl moze miec maks ${FLASHCARD_BACK_MAX_LENGTH} znakow.`;
+    errors.back = `Tył może mieć maks ${FLASHCARD_BACK_MAX_LENGTH} znaków.`;
   }
 
   return errors;
@@ -320,7 +320,7 @@ export function FlashcardGenerationView() {
       if (items.length > MAX_FLASHCARDS_PER_REQUEST) {
         setSaveState({
           isSaving: false,
-          error: `Jednorazowo mozesz zapisac maks ${MAX_FLASHCARDS_PER_REQUEST} fiszek.`,
+          error: `Jednorazowo możesz zapisać maks ${MAX_FLASHCARDS_PER_REQUEST} fiszek.`,
           success: null,
         });
         return;
@@ -345,7 +345,7 @@ export function FlashcardGenerationView() {
         });
 
         if (!response.ok) {
-          let message = `Nie udalo sie zapisac fiszek (status ${response.status}).`;
+          let message = `Nie udało się zapisać fiszek (status ${response.status}).`;
           try {
             const payload = (await response.json()) as { error?: string };
             if (payload?.error) {
@@ -374,7 +374,7 @@ export function FlashcardGenerationView() {
           error:
             error instanceof Error
               ? error.message
-              : "Nie udalo sie zapisac fiszek.",
+              : "Nie udało się zapisać fiszek.",
           success: null,
         });
       }
@@ -416,13 +416,13 @@ export function FlashcardGenerationView() {
                   isLoading={isLoading}
                 />
                 <p className="text-sm text-slate-300">
-                  Generowanie dostepne dla tekstu w przedziale 1000-10000
-                  znakow.
+                  Generowanie dostępne dla tekstu w przedziale 1000-10000
+                  znaków.
                 </p>
               </div>
               {generationError ? (
                 <ErrorNotification
-                  title="Generowanie nie powiodlo sie"
+                  title="Generowanie nie powiodło się"
                   message={generationError}
                 />
               ) : (
@@ -449,7 +449,7 @@ export function FlashcardGenerationView() {
 
             <div className="space-y-3">
               <div className="flex items-center justify-between text-sm text-slate-300">
-                <span>Zakres znakow</span>
+                <span>Zakres znaków</span>
                 <span>
                   {SOURCE_TEXT_MIN_LENGTH.toLocaleString("pl-PL")} -{" "}
                   {SOURCE_TEXT_MAX_LENGTH.toLocaleString("pl-PL")}
@@ -517,7 +517,7 @@ export function FlashcardGenerationView() {
 
           {saveState.error && (
             <ErrorNotification
-              title="Nie udalo sie zapisac fiszek"
+              title="Nie udało się zapisać fiszek"
               message={saveState.error}
             />
           )}

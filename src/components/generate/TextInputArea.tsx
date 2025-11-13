@@ -33,9 +33,9 @@ export function TextInputArea({
   onChange,
   minCharacters,
   maxCharacters,
-  placeholder = "Wklej tutaj zrodlowy tekst...",
-  label = "Tekst zrodlowy",
-  description = "Wymagana dlugosc tekstu to od 1000 do 10000 znakow. Najlepiej dziala dobrze sformatowany fragment notatek lub artykulu.",
+  placeholder = "Wklej tutaj źródłowy tekst...",
+  label = "Tekst źródłowy",
+  description = "Wymagana długość tekstu to od 1000 do 10000 znaków. Najlepiej działa dobrze sformatowany fragment notatek lub artykułu.",
   disabled = false,
   onValidityChange,
 }: TextInputAreaProps) {
@@ -72,23 +72,23 @@ export function TextInputArea({
 
   const helperMessage = useMemo(() => {
     if (status === "idle") {
-      return `Wklej tekst o dlugosci ${minCharacters.toLocaleString(
+      return `Wklej tekst o długości ${minCharacters.toLocaleString(
         "pl-PL",
-      )} - ${maxCharacters.toLocaleString("pl-PL")} znakow, aby rozpoczac.`;
+      )} - ${maxCharacters.toLocaleString("pl-PL")} znaków, aby rozpocząć.`;
     }
 
     if (status === "too-short") {
       const missing = minCharacters - charactersCount;
       return `Brakuje ${missing.toLocaleString(
         "pl-PL",
-      )} znakow do minimalnej dlugosci.`;
+      )} znaków do minimalnej długości.`;
     }
 
     if (status === "too-long") {
       const excess = charactersCount - maxCharacters;
       return `Usun ${excess.toLocaleString(
         "pl-PL",
-      )} znakow, aby zmiescic sie w limicie.`;
+      )} znaków, aby zmieścić się w limicie.`;
     }
 
     return "Swietnie! Tekst spelnia wymagania dla generowania fiszek.";

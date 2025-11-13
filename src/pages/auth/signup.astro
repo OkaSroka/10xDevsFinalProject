@@ -1,0 +1,30 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import AuthPage from "../../components/auth/AuthPage.astro";
+import { SignupForm } from "../../components/auth/SignupForm";
+
+const highlights = [
+  {
+    title: "Kontrola kolekcji",
+    description:
+      "Twórz prywatne zestawy fiszek i synchronizuj je na urządzeniach.",
+  },
+  {
+    title: "Historia AI",
+    description:
+      "Zachowuj wyniki generowania, aby szybciej wracać do najlepszych kart.",
+  },
+];
+---
+
+<Layout title="Rejestracja | 10xRules">
+  <AuthPage
+    eyebrow="Nowe konto"
+    title="Dołącz do 10xRules"
+    description="Podaj email oraz hasło. Po rejestracji wyślemy Ci link aktywacyjny - potwierdź adres email, aby się zalogować."
+    note="Po aktywacji będziesz mógł zapisywać wygenerowane fiszki, tworzyć kolekcje i śledzić postępy nauki."
+    highlights={highlights}
+  >
+    <SignupForm client:load />
+  </AuthPage>
+</Layout>

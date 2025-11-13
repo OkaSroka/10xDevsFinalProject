@@ -26,7 +26,7 @@ function parseErrorMessage(error: unknown): string {
     return error;
   }
 
-  return "Wystapil nieoczekiwany blad podczas generowania fiszek.";
+  return "Wystąpił nieoczekiwany błąd podczas generowania fiszek.";
 }
 
 export function useGenerateFlashcards() {
@@ -58,7 +58,7 @@ export function useGenerateFlashcards() {
       });
 
       if (!response.ok) {
-        let message = `Nie udalo sie rozpoczac generowania (status ${response.status}).`;
+        let message = `Nie udało się rozpocząć generowania (status ${response.status}).`;
         try {
           const payload = (await response.json()) as { error?: string };
           if (payload?.error) {
