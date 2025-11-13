@@ -1,5 +1,6 @@
 import { useEffect, useId, useMemo, useState, type ChangeEvent } from "react";
 
+import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 
 export type TextInputValidationStatus =
@@ -142,10 +143,10 @@ export function TextInputArea({
         <span className="text-xs text-slate-400">{characterLabel}</span>
       </div>
 
-      <textarea
+      <Textarea
         id={inputId}
         className={cn(
-          "min-h-[360px] w-full resize-none rounded-2xl border bg-slate-950/40 p-4 text-base leading-relaxed text-white shadow-[inset_0_1px_24px_rgba(15,23,42,0.65)] outline-none transition focus-visible:ring-2",
+          "min-h-[360px] resize-none rounded-2xl bg-slate-950/40 text-base leading-relaxed text-white shadow-[inset_0_1px_24px_rgba(15,23,42,0.65)]",
           fieldTone,
           disabled && "cursor-not-allowed opacity-75",
         )}

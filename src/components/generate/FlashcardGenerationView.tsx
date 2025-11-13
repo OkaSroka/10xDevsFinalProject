@@ -218,7 +218,7 @@ export function FlashcardGenerationView() {
         }
 
         const errors = validateDraft(proposal);
-        if (errors.front || errors.back) {
+        if (errors && (errors.front || errors.back)) {
           return { ...proposal, errors };
         }
 
@@ -255,13 +255,13 @@ export function FlashcardGenerationView() {
 
     switch (validationState.status) {
       case "valid":
-        return "Tekst spelnia wymagania, mozesz rozpoczac generowanie.";
+        return "Tekst spełnia wymagania, możesz rozpocząć generowanie.";
       case "too-long":
-        return "Tekst przekracza dozwolony limit znakow.";
+        return "Tekst przekracza dozwolony limit znaków.";
       case "too-short":
-        return "Dodaj wiecej tresci, aby osiagnac minimum.";
+        return "Dodaj więcej treści, aby osiągnąć minimum.";
       default:
-        return "Wklej fragment swoich notatek, aby rozpoczac.";
+        return "Wklej fragment swoich notatek, aby rozpocząć.";
     }
   }, [isLoading, proposals.length, validationState.status]);
 
@@ -404,7 +404,7 @@ export function FlashcardGenerationView() {
               onValidityChange={handleValidationChange}
               minCharacters={SOURCE_TEXT_MIN_LENGTH}
               maxCharacters={SOURCE_TEXT_MAX_LENGTH}
-              placeholder="Wklej tutaj swoje notatki, raport lub fragment ksiazki..."
+              placeholder="Wklej tutaj swoje notatki, raport lub fragment książki..."
               disabled={isLoading}
             />
 
@@ -479,8 +479,8 @@ export function FlashcardGenerationView() {
               </div>
             ) : (
               <div className="rounded-xl border border-dashed border-white/20 bg-white/5 p-4 text-sm text-slate-300">
-                Kolejne kroki (generowanie, przeglad fiszek i zapis) pojawia sie
-                tutaj, gdy tekst bedzie gotowy.
+                Kolejne kroki (generowanie, przegląd fiszek i zapis) pojawią się
+                tutaj, gdy tekst będzie gotowy.
               </div>
             )}
           </aside>
@@ -493,8 +493,8 @@ export function FlashcardGenerationView() {
             Propozycje fiszek AI
           </p>
           <p className="text-sm text-slate-300">
-            Zarzadzaj propozycjami, edytuj je oraz oznacz akceptacje przed
-            zapisem w bazie.
+            Zarządzaj propozycjami, edytuj je oraz zaakceptuj przed zapisem w
+            bazie.
           </p>
         </header>
 

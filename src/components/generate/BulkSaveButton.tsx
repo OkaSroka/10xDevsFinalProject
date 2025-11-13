@@ -1,6 +1,7 @@
 import { Loader2 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
 interface BulkSaveButtonProps {
@@ -28,36 +29,38 @@ export function BulkSaveButton({
   );
 
   return (
-    <div className="flex flex-col gap-3 rounded-2xl border border-white/10 bg-slate-950/30 p-4 text-sm text-slate-200 sm:flex-row sm:items-center sm:justify-between">
-      <div>
-        <p className="font-semibold text-white">
-          Lacznie propozycji: {totalCount}
-        </p>
-        <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
-          Do zapisu: {acceptedCount}
-        </p>
-      </div>
-      <div className="flex flex-wrap gap-2">
-        <Button
-          size="sm"
-          className={cn(
-            "bg-emerald-500 hover:bg-emerald-500/90",
-            acceptedCount === 0 && "opacity-70",
-          )}
-          disabled={disabled || isSaving || acceptedCount === 0}
-          onClick={onSaveAccepted}
-        >
-          {isSaving ? savingContent : "Zapisz zaakceptowane"}
-        </Button>
-        <Button
-          size="sm"
-          variant="secondary"
-          disabled={disabled || isSaving || totalCount === 0}
-          onClick={onSaveAll}
-        >
-          {isSaving ? savingContent : "Zapisz wszystkie"}
-        </Button>
-      </div>
-    </div>
+    <Card className="rounded-2xl border-white/10 bg-slate-950/30">
+      <CardContent className="flex flex-col gap-3 p-4 text-sm text-slate-200 sm:flex-row sm:items-center sm:justify-between">
+        <div>
+          <p className="font-semibold text-white">
+            Łącznie propozycji: {totalCount}
+          </p>
+          <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
+            Do zapisu: {acceptedCount}
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2">
+          <Button
+            size="sm"
+            className={cn(
+              "bg-emerald-500 hover:bg-emerald-500/90",
+              acceptedCount === 0 && "opacity-70",
+            )}
+            disabled={disabled || isSaving || acceptedCount === 0}
+            onClick={onSaveAccepted}
+          >
+            {isSaving ? savingContent : "Zapisz zaakceptowane"}
+          </Button>
+          <Button
+            size="sm"
+            variant="secondary"
+            disabled={disabled || isSaving || totalCount === 0}
+            onClick={onSaveAll}
+          >
+            {isSaving ? savingContent : "Zapisz wszystkie"}
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }
