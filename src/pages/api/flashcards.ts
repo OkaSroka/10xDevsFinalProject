@@ -77,7 +77,6 @@ async function getAuthenticatedUser(locals: App.Locals): Promise<User> {
  * Translates thrown errors into structured HTTP responses.
  */
 function handleError(error: unknown): Response {
-  // eslint-disable-next-line no-console
   console.error("POST /flashcards error:", error);
 
   if (error instanceof ApiError) {
@@ -170,7 +169,6 @@ export const POST: APIRoute = async ({ request, locals }) => {
     console.log("POST /flashcards - Authenticated user:", user.id);
 
     if (!locals.supabase) {
-      // eslint-disable-next-line no-console
       console.error("POST /flashcards - locals.supabase is undefined!");
       throw new Error("Supabase client not initialized");
     }

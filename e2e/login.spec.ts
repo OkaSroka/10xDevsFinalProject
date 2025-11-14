@@ -12,8 +12,8 @@ test.describe("Login Form", () => {
   test("should successfully login with valid credentials and redirect to homepage", async ({
     page,
   }) => {
-    const email = process.env.E2E_USERNAME!;
-    const password = process.env.E2E_PASSWORD!;
+    const email = process.env.E2E_USERNAME ?? "";
+    const password = process.env.E2E_PASSWORD ?? "";
 
     await loginPage.login(email, password);
 
@@ -28,7 +28,8 @@ test.describe("Login Form", () => {
 
     // Verify we're on homepage or that success message appeared
     const currentUrl = page.url();
-    const isOnHomepage = currentUrl.endsWith("/") || currentUrl.includes("localhost:3000");
+    const isOnHomepage =
+      currentUrl.endsWith("/") || currentUrl.includes("localhost:3000");
 
     if (!isOnHomepage) {
       // Check if success alert is visible
@@ -44,7 +45,7 @@ test.describe("Login Form", () => {
   });
 
   test("should show error message with invalid password", async ({ page }) => {
-    const email = process.env.E2E_USERNAME!;
+    const email = process.env.E2E_USERNAME ?? "";
     const invalidPassword = "wrongpassword123";
 
     // Start listening for API response BEFORE triggering login
@@ -59,7 +60,7 @@ test.describe("Login Form", () => {
     try {
       await responsePromise;
       await page.waitForTimeout(1500); // Wait for React to process error
-    } catch (e) {
+    } catch {
       // API call might not have happened, that's okay
       await page.waitForTimeout(3000);
     }
@@ -69,7 +70,9 @@ test.describe("Login Form", () => {
     expect(currentUrl).toContain("/auth/login");
   });
 
-  test("should show error message with non-existent email", async ({ page }) => {
+  test("should show error message with non-existent email", async ({
+    page,
+  }) => {
     const nonExistentEmail = "nonexistent@example.com";
     const password = "ValidPass123!";
 
@@ -85,7 +88,7 @@ test.describe("Login Form", () => {
     try {
       await responsePromise;
       await page.waitForTimeout(1500); // Wait for React to process error
-    } catch (e) {
+    } catch {
       // API call might not have happened, that's okay
       await page.waitForTimeout(3000);
     }
@@ -106,14 +109,17 @@ test.describe("Login Form", () => {
     const helperText = await loginPage.emailInput.getHelperText();
 
     // Accept either: validation error OR form didn't submit (still showing helper text)
-    const hasValidationError = helperText.includes("wymagany") || helperText.includes("wymagane");
+    const hasValidationError =
+      helperText.includes("wymagany") || helperText.includes("wymagane");
     const stillShowingHelper = helperText.includes("Używamy");
 
     expect(hasValidationError || stillShowingHelper).toBe(true);
   });
 
-  test("should show validation error when password is empty", async ({ page }) => {
-    await loginPage.emailInput.fill(process.env.E2E_USERNAME!);
+  test("should show validation error when password is empty", async ({
+    page,
+  }) => {
+    await loginPage.emailInput.fill(process.env.E2E_USERNAME ?? "");
     await loginPage.emailInput.locator.press("Enter");
 
     // Wait for React to process submission
@@ -123,11 +129,14 @@ test.describe("Login Form", () => {
     const helperText = await loginPage.passwordInput.getHelperText();
 
     // Password field should show some kind of validation message
-    const hasPasswordText = helperText.includes("Hasło") || helperText.includes("hasło");
+    const hasPasswordText =
+      helperText.includes("Hasło") || helperText.includes("hasło");
     expect(hasPasswordText).toBe(true);
   });
 
-  test("should show validation error when both fields are empty", async ({ page }) => {
+  test("should show validation error when both fields are empty", async ({
+    page,
+  }) => {
     // Click in email field then press Enter to trigger form submission
     await loginPage.emailInput.locator.click();
     await loginPage.emailInput.locator.press("Enter");
@@ -144,7 +153,9 @@ test.describe("Login Form", () => {
     await expect(loginPage.passwordInput.locator).toBeVisible();
   });
 
-  test("should show validation error with invalid email format", async ({ page }) => {
+  test("should show validation error with invalid email format", async ({
+    page,
+  }) => {
     await loginPage.emailInput.fill("invalid-email");
     await loginPage.passwordInput.fill("ValidPass123!");
     await loginPage.passwordInput.locator.press("Enter");
@@ -161,8 +172,10 @@ test.describe("Login Form", () => {
     expect(emailValue).toBe("invalid-email");
   });
 
-  test("should show validation error when password is too short", async ({ page }) => {
-    await loginPage.emailInput.fill(process.env.E2E_USERNAME!);
+  test("should show validation error when password is too short", async ({
+    page,
+  }) => {
+    await loginPage.emailInput.fill(process.env.E2E_USERNAME ?? "");
     await loginPage.passwordInput.fill("short");
     await loginPage.passwordInput.locator.press("Enter");
 
@@ -181,8 +194,8 @@ test.describe("Login Form", () => {
   test("should disable submit button during login submission", async ({
     page,
   }) => {
-    const email = process.env.E2E_USERNAME!;
-    const password = process.env.E2E_PASSWORD!;
+    const email = process.env.E2E_USERNAME ?? "";
+    const password = process.env.E2E_PASSWORD ?? "";
 
     await loginPage.emailInput.fill(email);
     await loginPage.passwordInput.fill(password);
@@ -192,9 +205,11 @@ test.describe("Login Form", () => {
 
     // Check button text changes to "Logowanie..." or button gets disabled
     const buttonTextOrDisabled = await Promise.race([
-      loginPage.submitButton.locator.textContent().then(text => text?.includes("Logowanie")),
-      loginPage.submitButton.locator.isDisabled().then(disabled => disabled),
-      page.waitForTimeout(1000).then(() => false)
+      loginPage.submitButton.locator
+        .textContent()
+        .then((text) => text?.includes("Logowanie")),
+      loginPage.submitButton.locator.isDisabled().then((disabled) => disabled),
+      page.waitForTimeout(1000).then(() => false),
     ]);
 
     // We expect either the button text to change or button to be disabled
