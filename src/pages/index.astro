@@ -1,8 +1,77 @@
 ---
 import Welcome from "../components/Welcome.astro";
 import Layout from "../layouts/Layout.astro";
+
+// Get authenticated user from locals (set by middleware)
+const { user } = Astro.locals;
 ---
 
 <Layout>
-  <Welcome />
+  {
+    user ? (
+      <>
+        <nav
+          data-test-id="landing-user-nav"
+          class="fixed top-0 left-0 w-full border-b border-cyan-500/20 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 backdrop-blur-md shadow-lg shadow-cyan-500/10 z-50"
+        >
+          <div
+            data-test-id="landing-user-banner"
+            class="container mx-auto flex items-center justify-between px-4 py-4"
+          >
+            <p class="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-base font-semibold text-transparent">
+              Witaj, {user.email}!
+            </p>
+            <div class="flex items-center gap-4">
+              <a
+                data-test-id="landing-home-link"
+                href="/"
+                class="cursor-pointer rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 px-6 py-2 text-sm font-semibold text-white shadow-lg shadow-cyan-500/30 transition hover:translate-y-0.5"
+              >
+                Home
+              </a>
+              <form action="/api/auth/logout" method="post">
+                <button
+                  data-test-id="landing-logout-button"
+                  type="submit"
+                  class="cursor-pointer rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 px-6 py-2 text-sm font-semibold text-white shadow-lg shadow-cyan-500/30 transition hover:translate-y-0.5"
+                >
+                  Wyloguj się
+                </button>
+              </form>
+            </div>
+          </div>
+        </nav>
+        <Welcome />
+      </>
+    ) : (
+      <div class="container mx-auto px-4 py-8" data-test-id="guest-welcome-container">
+        <div
+          data-test-id="guest-auth-card"
+          class="mb-8 rounded-lg bg-blue-50 p-4 text-blue-800 dark:bg-blue-900 dark:text-blue-100"
+        >
+          <p class="text-lg font-semibold">Witaj w 10xRules!</p>
+          <p class="mt-2">
+            Zaloguj się lub zarejestruj, aby korzystać z aplikacji.
+          </p>
+          <div class="mt-4 flex gap-4">
+            <a
+              data-test-id="guest-login-cta"
+              href="/auth/login"
+              class="rounded bg-blue-600 px-4 py-2 font-semibold text-white hover:bg-blue-700"
+            >
+              Zaloguj się
+            </a>
+            <a
+              data-test-id="guest-signup-cta"
+              href="/auth/signup"
+              class="rounded bg-green-600 px-4 py-2 font-semibold text-white hover:bg-green-700"
+            >
+              Zarejestruj się
+            </a>
+          </div>
+        </div>
+        <Welcome />
+      </div>
+    )
+  }
 </Layout>

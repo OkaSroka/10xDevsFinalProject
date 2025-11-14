@@ -1,0 +1,34 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { FlashcardGenerationView } from "../components/generate/FlashcardGenerationView";
+---
+
+<Layout title="Generowanie fiszek">
+  <main
+    class="min-h-screen bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 px-4 py-12 text-white"
+    data-test-id="generate-page"
+  >
+    <section
+      class="mx-auto max-w-5xl space-y-10"
+      aria-labelledby="flashcard-generation-heading"
+      data-test-id="flashcard-generation-section"
+    >
+      <header class="space-y-4 text-center">
+        <p class="text-sm uppercase tracking-[0.4em] text-slate-400">
+          Inteligentne fiszki
+        </p>
+        <h1
+          id="flashcard-generation-heading"
+          class="text-3xl font-semibold tracking-tight text-white md:text-5xl"
+        >
+          Przygotuj notatki, my zajmiemy się fiszkami
+        </h1>
+        <p class="text-base text-slate-300 md:text-lg">
+          Wklej fragment materiału (1000&ndash;10000 znaków), a następnie
+          kontroluj proces generowania i akceptuj najlepsze propozycje.
+        </p>
+      </header>
+      <FlashcardGenerationView client:load />
+    </section>
+  </main>
+</Layout>

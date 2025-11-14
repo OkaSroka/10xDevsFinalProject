@@ -4,10 +4,19 @@ A modern, opinionated starter template for building fast, accessible, and AI-fri
 
 ## Tech Stack
 
+
 - [Astro](https://astro.build/) v5.5.5 - Modern web framework for building fast, content-focused websites
 - [React](https://react.dev/) v19.0.0 - UI library for building interactive components
 - [TypeScript](https://www.typescriptlang.org/) v5 - Type-safe JavaScript
 - [Tailwind CSS](https://tailwindcss.com/) v4.0.17 - Utility-first CSS framework
+
+## Testing Stack
+
+- **Unit & Integration Testing:** [Vitest](https://vitest.dev/)
+- **End-to-End (E2E) Testing:** [Playwright](https://playwright.dev/)
+
+- **Coverage Reporting:** [Codecov](https://about.codecov.io/) (integrated with CI)
+
 
 ## Prerequisites
 
@@ -48,6 +57,40 @@ npm run build
 - `npm run preview` - Preview production build
 - `npm run lint` - Run ESLint
 - `npm run lint:fix` - Fix ESLint issues
+
+## Running Tests
+
+### Unit & integration (Vitest)
+
+- `npm run test` - Executes all unit/integration specs in `src/lib/__tests__`
+- `npm run test:ui` - Opens the Vitest UI runner for focused debugging
+- `npm run test:coverage` - Generates V8 coverage reports (`coverage/` folder)
+
+Key scenarios covered today:
+
+- `generation.service.test.ts` validates both the happy path and AI failure handling for `GenerationService`
+- `example.test.ts` is a lightweight starter spec that confirms the tooling is wired correctly
+
+### End-to-end (Playwright)
+
+- `npm run test:e2e` - Runs the headless Playwright suite located in `e2e/`
+- `npm run test:e2e:ui` - Launches the interactive Playwright UI
+- `npm run test:e2e:debug` - Runs tests with Playwright's inspector for step-by-step debugging
+- `npm run test:e2e:codegen` - Opens the recorder to scaffold new specs
+
+Before running Playwright locally for the first time, install the required browsers with:
+
+```bash
+npx playwright install
+```
+
+### Current status
+
+`npm run test` (Vitest) - all suites passing as of the latest run.
+
+## API Testing Helpers
+
+- `docs/flashcards.http` – VS Code REST Client compatible collection with ready-to-run POST `/api/flashcards` scenarios (manual creation, AI-linked batches, and validation failures). Update the `@baseUrl` and `@authToken` variables before executing requests.
 
 ## Project Structure
 

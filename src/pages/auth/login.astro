@@ -1,0 +1,28 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import AuthPage from "../../components/auth/AuthPage.astro";
+import { LoginForm } from "../../components/auth/LoginForm";
+
+const highlights = [
+  {
+    title: "Kolekcje",
+    description: "Dostęp do zapisanych zbiorów fiszek i ulubionych regułek.",
+  },
+  {
+    title: "Tryb AI",
+    description: "Kontynuuj generację i zapisuj najlepsze propozycje.",
+  },
+];
+---
+
+<Layout title="Logowanie | 10xRules">
+  <AuthPage
+    eyebrow="Autoryzacja"
+    title="Zaloguj się do 10xRules"
+    description="Twoje konto przechowuje prywatne kolekcje fiszek, generacje AI i ustawienia nauki. Zabezpieczamy je Supabase Auth."
+    note="Po udanym logowaniu interfejs odblokuje sidebar kolekcji oraz akcje zapisu."
+    highlights={highlights}
+  >
+    <LoginForm client:load />
+  </AuthPage>
+</Layout>

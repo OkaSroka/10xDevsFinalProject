@@ -1,125 +1,125 @@
-<div
-  class="relative w-full mx-auto min-h-screen bg-gradient-to-br from-indigo-900 via-purple-900 to-blue-900 p-4 sm:p-8"
+<section
+  class="relative min-h-screen bg-slate-950 text-white"
+  data-test-id="welcome-section"
 >
   <div
-    class="relative max-w-4xl mx-auto backdrop-blur-xl bg-gradient-to-b from-white/10 to-white/5 rounded-2xl shadow-2xl p-8 text-white border border-white/10"
+    class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(79,70,229,0.25),_transparent_55%)]"
+    aria-hidden="true"
   >
-    <div class="space-y-8">
-      <div class="text-center">
-        <h1
-          class="text-6xl font-bold mb-4 bg-gradient-to-r from-blue-200 via-purple-200 to-pink-200 text-transparent bg-clip-text drop-shadow-lg"
-        >
-          Witaj w 10xDevs Astro Starter!
-        </h1>
-        <p class="text-xl text-blue-100/90 drop-shadow-md">
-          Ten projekt został zbudowany w oparciu o nowoczesny stack
-          technologiczny:
-        </p>
-      </div>
-
-      <div class="flex flex-col gap-6 max-w-2xl mx-auto">
-        <div
-          class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10"
-        >
-          <h2
-            class="text-2xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-200"
-          >
-            Core
-          </h2>
-          <ul class="space-y-3">
-            <li class="flex items-center space-x-3">
-              <span
-                class="font-mono bg-blue-900/50 px-3 py-1.5 rounded-lg text-blue-200 shadow-sm"
-                >Astro v5.5.5</span
-              >
-              <span class="text-blue-100/90"
-                >- Metaframework do aplikacji webowych</span
-              >
-            </li>
-            <li class="flex items-center space-x-3">
-              <span
-                class="font-mono bg-blue-900/50 px-3 py-1.5 rounded-lg text-blue-200 shadow-sm"
-                >React v19</span
-              >
-              <span class="text-blue-100/90"
-                >- Biblioteka UI do komponentów interaktywnych</span
-              >
-            </li>
-            <li class="flex items-center space-x-3">
-              <span
-                class="font-mono bg-blue-900/50 px-3 py-1.5 rounded-lg text-blue-200 shadow-sm"
-                >TypeScript</span
-              >
-              <span class="text-blue-100/90">- Typowanie statyczne</span>
-            </li>
-          </ul>
-        </div>
-
-        <div
-          class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10"
-        >
-          <h2
-            class="text-2xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-200"
-          >
-            Stylowanie
-          </h2>
-          <ul class="space-y-3">
-            <li class="flex items-center space-x-3">
-              <span
-                class="font-mono bg-blue-900/50 px-3 py-1.5 rounded-lg text-blue-200 shadow-sm"
-                >Tailwind CSS v4</span
-              >
-              <span class="text-blue-100/90">- Utility-first CSS framework</span
-              >
-            </li>
-          </ul>
-        </div>
-
-        <div
-          class="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-lg rounded-xl p-6 border border-white/10"
-        >
-          <h2
-            class="text-2xl font-semibold mb-4 text-transparent bg-clip-text bg-gradient-to-r from-blue-200 to-purple-200"
-          >
-            Statyczna analiza kodu
-          </h2>
-          <ul class="space-y-3">
-            <li class="flex items-center space-x-3">
-              <span
-                class="font-mono bg-blue-900/50 px-3 py-1.5 rounded-lg text-blue-200 shadow-sm"
-                >ESLint v9</span
-              >
-              <span class="text-blue-100/90">- Lintowanie kodu</span>
-            </li>
-            <li class="flex items-center space-x-3">
-              <span
-                class="font-mono bg-blue-900/50 px-3 py-1.5 rounded-lg text-blue-200 shadow-sm"
-                >Prettier</span
-              >
-              <span class="text-blue-100/90">- Formatowanie kodu</span>
-            </li>
-            <li class="flex items-center space-x-3">
-              <span
-                class="font-mono bg-blue-900/50 px-3 py-1.5 rounded-lg text-blue-200 shadow-sm"
-                >Husky i Lint-staged</span
-              >
-              <span class="text-blue-100/90"
-                >- Automatyczna analiza kodu przed commitowaniem</span
-              >
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <p class="text-lg text-center text-blue-100/90 mt-8 leading-relaxed">
-        Starter zawiera wszystko, czego potrzebujesz do rozpoczęcia tworzenia <br
-          class="hidden sm:block"
-        />
-        <span
-          class="font-semibold bg-gradient-to-r from-blue-200 to-purple-200 text-transparent bg-clip-text"
-          >nowoczesnych aplikacji webowych!</span
-        >
+  </div>
+  <div
+    class="relative mx-auto flex max-w-6xl flex-col gap-16 px-6 pt-30 py-20 lg:flex-row lg:items-center"
+  >
+    <div class="space-y-8 text-center lg:text-left">
+      <p class="text-xs uppercase tracking-[0.6em] text-slate-400">
+        Inteligentne fiszki
       </p>
+      <h1 class="text-4xl font-semibold leading-tight text-white md:text-6xl">
+        Zamieniaj notatki w gotowe fiszki AI w kilka sekund
+      </h1>
+      <p class="text-lg text-slate-300 md:text-xl">
+        Nasz generator pozwala wkleić dowolny fragment tekstu, poprosić sztuczną
+        inteligencję o propozycje i jednym kliknięciem zapisać zaakceptowane
+        karty w bazie.
+      </p>
+      <div
+        class="flex flex-wrap items-center justify-center gap-4 lg:justify-start"
+      >
+        <a
+          data-test-id="welcome-start-generating"
+          href="/generate"
+          class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 px-8 py-3 text-lg font-semibold shadow-lg shadow-cyan-500/30 transition hover:translate-y-0.5"
+        >
+          Rozpocznij generowanie
+          <span aria-hidden="true">→</span>
+        </a>
+      </div>
+      <dl
+        class="grid gap-6 text-left sm:grid-cols-3"
+        data-test-id="welcome-stats"
+      >
+        <div>
+          <dt class="text-xs uppercase tracking-[0.3em] text-slate-500">
+            Limit tekstu
+          </dt>
+          <dd class="text-2xl font-semibold text-white">10 000 znaków</dd>
+        </div>
+        <div>
+          <dt class="text-xs uppercase tracking-[0.3em] text-slate-500">
+            Czas generacji
+          </dt>
+          <dd class="text-2xl font-semibold text-white">&lt; 10 sekund</dd>
+        </div>
+        <div>
+          <dt class="text-xs uppercase tracking-[0.3em] text-slate-500">
+            Kontrola
+          </dt>
+          <dd class="text-2xl font-semibold text-white">Akceptuj / Edytuj</dd>
+        </div>
+      </dl>
+    </div>
+
+    <div
+      id="how-it-works"
+      data-test-id="welcome-how-it-works"
+      class="w-full rounded-3xl border border-white/10 bg-gradient-to-b from-white/5 to-white/0 p-8 shadow-[0_40px_120px_rgba(15,23,42,0.6)]"
+    >
+      <div class="space-y-8">
+        <div class="space-y-3">
+          <p class="text-xs uppercase tracking-[0.4em] text-slate-400">
+            Jak to działa
+          </p>
+          <h2 class="text-2xl font-semibold text-white">
+            Trzy kroki do gotowych fiszek
+          </h2>
+          <p class="text-sm text-slate-300">
+            Wszystkie funkcje znajdziesz w widoku <code>/generate</code>.
+          </p>
+        </div>
+        <ol class="space-y-6" data-test-id="welcome-steps">
+          <li
+            class="flex gap-4 rounded-2xl border border-white/10 bg-white/5 p-4"
+          >
+            <span class="text-3xl font-semibold text-cyan-400">1</span>
+            <div>
+              <p class="text-lg font-semibold text-white">
+                Wklej fragment materiału
+              </p>
+              <p class="text-sm text-slate-300">
+                Walidacja pilnuje zakresu 1000-10000 znaków i pokazuje licznik
+                na żywo.
+              </p>
+            </div>
+          </li>
+          <li
+            class="flex gap-4 rounded-2xl border border-white/10 bg-white/5 p-4"
+          >
+            <span class="text-3xl font-semibold text-cyan-400">2</span>
+            <div>
+              <p class="text-lg font-semibold text-white">
+                Poproś AI o propozycje
+              </p>
+              <p class="text-sm text-slate-300">
+                Silnik /generations zwraca jakościowe karty gotowe do przeglądu.
+              </p>
+            </div>
+          </li>
+          <li
+            class="flex gap-4 rounded-2xl border border-white/10 bg-white/5 p-4"
+          >
+            <span class="text-3xl font-semibold text-cyan-400">3</span>
+            <div>
+              <p class="text-lg font-semibold text-white">
+                Akceptuj, edytuj i zapisz
+              </p>
+              <p class="text-sm text-slate-300">
+                Użyj panelu akcji, aby hurtowo zapisać zaakceptowane fiszki w
+                bazie.
+              </p>
+            </div>
+          </li>
+        </ol>
+      </div>
     </div>
   </div>
-</div>
+</section>
