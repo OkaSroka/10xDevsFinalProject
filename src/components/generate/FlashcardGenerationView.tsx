@@ -394,8 +394,14 @@ export function FlashcardGenerationView() {
     isLoading || hasEditingProposal || proposals.length === 0;
 
   return (
-    <div className="space-y-10 text-white">
-      <section className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_30px_120px_rgba(0,0,0,0.45)] backdrop-blur">
+    <div
+      className="space-y-10 text-white"
+      data-test-id="flashcard-generation-view"
+    >
+      <section
+        className="rounded-3xl border border-white/10 bg-white/5 p-6 shadow-[0_30px_120px_rgba(0,0,0,0.45)] backdrop-blur"
+        data-test-id="flashcard-generation-input-panel"
+      >
         <div className="flex flex-col gap-6 lg:flex-row">
           <div className="flex-1 space-y-6">
             <TextInputArea
@@ -408,7 +414,10 @@ export function FlashcardGenerationView() {
               disabled={isLoading}
             />
 
-            <div className="space-y-3 rounded-2xl border border-white/10 bg-slate-950/30 p-4">
+            <div
+              className="space-y-3 rounded-2xl border border-white/10 bg-slate-950/30 p-4"
+              data-test-id="generate-action-panel"
+            >
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <GenerateButton
                   onClick={handleGenerateClick}
@@ -434,7 +443,10 @@ export function FlashcardGenerationView() {
             </div>
           </div>
 
-          <aside className="w-full max-w-sm space-y-5 rounded-2xl border border-white/10 bg-slate-950/40 p-5 shadow-inner shadow-black/30 lg:self-start">
+          <aside
+            className="w-full max-w-sm space-y-5 rounded-2xl border border-white/10 bg-slate-950/40 p-5 shadow-inner shadow-black/30 lg:self-start"
+            data-test-id="generation-status-panel"
+          >
             <div>
               <p className="text-xs uppercase tracking-[0.3em] text-slate-400">
                 Status
@@ -469,7 +481,10 @@ export function FlashcardGenerationView() {
             </div>
 
             {generationData ? (
-              <div className="rounded-xl border border-white/15 bg-white/5 p-4 text-sm text-slate-200">
+              <div
+                className="rounded-xl border border-white/15 bg-white/5 p-4 text-sm text-slate-200"
+                data-test-id="generation-history-card"
+              >
                 <p className="font-semibold text-white">
                   Ostatnia generacja #{generationData.generation_id}
                 </p>
@@ -478,7 +493,10 @@ export function FlashcardGenerationView() {
                 </p>
               </div>
             ) : (
-              <div className="rounded-xl border border-dashed border-white/20 bg-white/5 p-4 text-sm text-slate-300">
+              <div
+                className="rounded-xl border border-dashed border-white/20 bg-white/5 p-4 text-sm text-slate-300"
+                data-test-id="generation-status-placeholder"
+              >
                 Kolejne kroki (generowanie, przegląd fiszek i zapis) pojawią się
                 tutaj, gdy tekst będzie gotowy.
               </div>
@@ -487,8 +505,14 @@ export function FlashcardGenerationView() {
         </div>
       </section>
 
-      <section className="rounded-3xl border border-dashed border-white/15 bg-slate-950/30 p-6 shadow-inner shadow-black/40">
-        <header className="text-center space-y-2">
+      <section
+        className="rounded-3xl border border-dashed border-white/15 bg-slate-950/30 p-6 shadow-inner shadow-black/40"
+        data-test-id="flashcard-proposals-panel"
+      >
+        <header
+          className="text-center space-y-2"
+          data-test-id="flashcard-proposals-header"
+        >
           <p className="text-lg font-semibold text-white">
             Propozycje fiszek AI
           </p>
@@ -498,7 +522,10 @@ export function FlashcardGenerationView() {
           </p>
         </header>
 
-        <div className="mt-6 space-y-4">
+        <div
+          className="mt-6 space-y-4"
+          data-test-id="flashcard-proposals-content"
+        >
           <BulkSaveButton
             totalCount={proposals.length}
             acceptedCount={acceptedProposals.length}

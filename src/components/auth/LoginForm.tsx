@@ -107,8 +107,8 @@ export function LoginForm() {
   };
 
   return (
-    <section aria-labelledby="login-title">
-      <Card className="bg-transparent px-5">
+    <section aria-labelledby="login-title" data-test-id="login-form-section">
+      <Card className="bg-transparent px-5" data-test-id="login-form-card">
         <CardHeader className="px-0 pt-0">
           <CardTitle
             id="login-title"
@@ -124,6 +124,7 @@ export function LoginForm() {
         <CardContent className="space-y-6 px-0 pb-0">
           {status.type !== "idle" && (
             <Alert
+              data-test-id="login-form-status"
               variant={status.type === "error" ? "destructive" : "default"}
               className="bg-white/5 text-slate-100"
             >
@@ -136,7 +137,12 @@ export function LoginForm() {
             </Alert>
           )}
 
-          <form className="space-y-5" noValidate onSubmit={handleSubmit}>
+          <form
+            className="space-y-5"
+            data-test-id="login-form"
+            noValidate
+            onSubmit={handleSubmit}
+          >
             <div className="space-y-2">
               <label
                 htmlFor="login-email"
@@ -151,6 +157,7 @@ export function LoginForm() {
                 autoComplete="email"
                 placeholder="ty@10xrules.dev"
                 value={values.email}
+                data-test-id="login-email-input"
                 aria-invalid={shouldShowError("email")}
                 aria-describedby="login-email-helper"
                 onChange={handleChange("email")}
@@ -188,6 +195,7 @@ export function LoginForm() {
                 autoComplete="current-password"
                 placeholder="Twoje hasło"
                 value={values.password}
+                data-test-id="login-password-input"
                 aria-invalid={shouldShowError("password")}
                 aria-describedby="login-password-helper"
                 onChange={handleChange("password")}
@@ -205,6 +213,7 @@ export function LoginForm() {
 
             <Button
               type="submit"
+              data-test-id="login-submit-button"
               className="cursor-pointer w-full rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 text-base font-semibold text-white shadow-lg shadow-cyan-500/30 transition hover:translate-y-0.5"
               disabled={isSubmitting}
             >

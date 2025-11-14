@@ -9,11 +9,13 @@ export function SkeletonLoader({ items = 3 }: SkeletonLoaderProps) {
       role="status"
       aria-live="polite"
       aria-label="Ladowanie propozycji fiszek"
+      data-test-id="flashcard-list-skeleton"
     >
       {Array.from({ length: items }).map((_, index) => (
         <div
           key={`skeleton-${index}`}
           className="animate-pulse rounded-2xl border border-white/5 bg-white/5 p-4 shadow-inner shadow-black/30"
+          data-test-id="flashcard-skeleton-item"
         >
           <div className="mb-3 h-4 w-2/3 rounded-full bg-white/10" />
           <div className="space-y-2">

@@ -125,8 +125,8 @@ export function SignupForm() {
   };
 
   return (
-    <section aria-labelledby="signup-title">
-      <Card className="bg-transparent px-5">
+    <section aria-labelledby="signup-title" data-test-id="signup-form-section">
+      <Card className="bg-transparent px-5" data-test-id="signup-form-card">
         <CardHeader className="px-0 pt-0">
           <CardTitle
             id="signup-title"
@@ -142,6 +142,7 @@ export function SignupForm() {
         <CardContent className="space-y-6 px-0 pb-0">
           {status.type !== "idle" && (
             <Alert
+              data-test-id="signup-form-status"
               variant={status.type === "error" ? "destructive" : "default"}
               className="bg-white/5 text-slate-100"
             >
@@ -154,7 +155,12 @@ export function SignupForm() {
             </Alert>
           )}
 
-          <form className="space-y-5" noValidate onSubmit={handleSubmit}>
+          <form
+            className="space-y-5"
+            data-test-id="signup-form"
+            noValidate
+            onSubmit={handleSubmit}
+          >
             <div className="space-y-2">
               <label
                 htmlFor="signup-email"
@@ -169,6 +175,7 @@ export function SignupForm() {
                 autoComplete="email"
                 placeholder="nazwa@firma.com"
                 value={values.email}
+                data-test-id="signup-email-input"
                 onChange={handleChange("email")}
                 onBlur={handleBlur("email")}
                 aria-invalid={shouldShowError("email")}
@@ -194,14 +201,15 @@ export function SignupForm() {
               <div className="relative">
                 <Input
                   id="signup-password"
-                  name="password"
-                  type={showPassword ? "text" : "password"}
-                  autoComplete="new-password"
-                  placeholder="Wybierz hasło"
-                  value={values.password}
-                  onChange={handleChange("password")}
-                  onBlur={handleBlur("password")}
-                  aria-invalid={shouldShowError("password")}
+                name="password"
+                type={showPassword ? "text" : "password"}
+                autoComplete="new-password"
+                placeholder="Wybierz hasło"
+                value={values.password}
+                data-test-id="signup-password-input"
+                onChange={handleChange("password")}
+                onBlur={handleBlur("password")}
+                aria-invalid={shouldShowError("password")}
                   aria-describedby="signup-password-helper"
                   className="pr-10"
                 />
@@ -269,14 +277,15 @@ export function SignupForm() {
               <div className="relative">
                 <Input
                   id="signup-password-confirm"
-                  name="confirmPassword"
-                  type={showConfirmPassword ? "text" : "password"}
-                  autoComplete="new-password"
-                  placeholder="Powtórz hasło"
-                  value={values.confirmPassword}
-                  onChange={handleChange("confirmPassword")}
-                  onBlur={handleBlur("confirmPassword")}
-                  aria-invalid={shouldShowError("confirmPassword")}
+                name="confirmPassword"
+                type={showConfirmPassword ? "text" : "password"}
+                autoComplete="new-password"
+                placeholder="Powtórz hasło"
+                value={values.confirmPassword}
+                data-test-id="signup-confirm-password-input"
+                onChange={handleChange("confirmPassword")}
+                onBlur={handleBlur("confirmPassword")}
+                aria-invalid={shouldShowError("confirmPassword")}
                   aria-describedby="signup-password-confirm-helper"
                   className="pr-10"
                 />
@@ -338,6 +347,7 @@ export function SignupForm() {
 
             <Button
               type="submit"
+              data-test-id="signup-submit-button"
               className="cursor-pointer w-full rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 text-base font-semibold text-white shadow-lg shadow-cyan-500/30 transition hover:translate-y-0.5"
               disabled={isSubmitting}
             >

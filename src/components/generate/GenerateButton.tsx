@@ -20,6 +20,7 @@ export function GenerateButton({
   return (
     <Button
       type="button"
+      data-test-id="generate-button"
       onClick={onClick}
       disabled={disabled || isLoading}
       className={cn(

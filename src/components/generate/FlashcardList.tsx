@@ -24,7 +24,10 @@ function FlashcardListComponent({
 }: FlashcardListProps) {
   if (!proposals.length) {
     return (
-      <div className="rounded-2xl border border-dashed border-white/15 bg-white/5 p-5 text-center text-sm text-slate-300">
+      <div
+        className="rounded-2xl border border-dashed border-white/15 bg-white/5 p-5 text-center text-sm text-slate-300"
+        data-test-id="flashcard-list-empty"
+      >
         Po wygenerowaniu zobaczysz tutaj liste fiszek gotowych do akceptacji i
         zapisu.
       </div>
@@ -32,7 +35,7 @@ function FlashcardListComponent({
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" data-test-id="flashcard-list">
       {proposals.map((proposal, index) => (
         <FlashcardListItem
           key={proposal.id}

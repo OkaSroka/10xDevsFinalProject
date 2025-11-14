@@ -52,6 +52,8 @@ export function ErrorNotification({
 
   return (
     <Alert
+      data-test-id="error-notification"
+      data-variant={variant}
       variant={config.alertVariant}
       className={cn(
         "rounded-2xl shadow-inner shadow-black/30",

@@ -84,8 +84,11 @@ export function ResetPasswordForm() {
   };
 
   return (
-    <section aria-labelledby="reset-password-title">
-      <Card className="bg-transparent px-5">
+    <section
+      aria-labelledby="reset-password-title"
+      data-test-id="reset-password-form-section"
+    >
+      <Card className="bg-transparent px-5" data-test-id="reset-password-form-card">
         <CardHeader className="px-0 pt-0">
           <CardTitle
             id="reset-password-title"
@@ -101,6 +104,7 @@ export function ResetPasswordForm() {
         <CardContent className="space-y-6 px-0 pb-0">
           {status.type !== "idle" && (
             <Alert
+              data-test-id="reset-password-form-status"
               variant={status.type === "error" ? "destructive" : "default"}
               className="bg-white/5 text-slate-100"
             >
@@ -113,7 +117,12 @@ export function ResetPasswordForm() {
             </Alert>
           )}
 
-          <form className="space-y-5" noValidate onSubmit={handleSubmit}>
+          <form
+            className="space-y-5"
+            data-test-id="reset-password-form"
+            noValidate
+            onSubmit={handleSubmit}
+          >
             <div className="space-y-2">
               <label
                 htmlFor="reset-email"
@@ -128,6 +137,7 @@ export function ResetPasswordForm() {
                 autoComplete="email"
                 placeholder="twoj.email@example.com"
                 value={email}
+                data-test-id="reset-password-email-input"
                 onChange={(event) => setEmail(event.target.value)}
                 onBlur={() => setTouched(true)}
                 aria-invalid={shouldShowError}
@@ -145,6 +155,7 @@ export function ResetPasswordForm() {
 
             <Button
               type="submit"
+              data-test-id="reset-password-submit-button"
               className="cursor-pointer w-full rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 text-base font-semibold text-white shadow-lg shadow-cyan-500/30 transition hover:translate-y-0.5"
               disabled={isSubmitting}
             >

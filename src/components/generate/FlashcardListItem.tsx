@@ -45,6 +45,7 @@ export function FlashcardListItem({
     <div className="flex flex-wrap gap-2">
       <Button
         size="sm"
+        data-test-id={`flashcard-save-${proposal.id}`}
         onClick={() => onSaveEdit(proposal.id)}
         className="bg-emerald-500 hover:bg-emerald-500/90"
       >
@@ -54,6 +55,7 @@ export function FlashcardListItem({
       <Button
         size="sm"
         variant="secondary"
+        data-test-id={`flashcard-cancel-${proposal.id}`}
         onClick={() => onCancelEdit(proposal.id)}
       >
         <Undo2 className="size-4" />
@@ -65,6 +67,7 @@ export function FlashcardListItem({
       <Button
         size="sm"
         variant={proposal.status === "accepted" ? "secondary" : "default"}
+        data-test-id={`flashcard-accept-toggle-${proposal.id}`}
         onClick={() => onToggleAccept(proposal.id)}
         disabled={proposal.isEditing}
       >
@@ -74,6 +77,7 @@ export function FlashcardListItem({
       <Button
         size="sm"
         variant="outline"
+        data-test-id={`flashcard-edit-${proposal.id}`}
         onClick={() => onStartEdit(proposal.id)}
         disabled={proposal.isEditing}
       >
@@ -84,6 +88,7 @@ export function FlashcardListItem({
         size="sm"
         variant="ghost"
         className="text-rose-300 hover:bg-rose-500/10"
+        data-test-id={`flashcard-reject-${proposal.id}`}
         onClick={() => onReject(proposal.id)}
         disabled={proposal.isEditing}
       >
@@ -97,7 +102,11 @@ export function FlashcardListItem({
   const backTextareaId = `${proposal.id}-back`;
 
   return (
-    <Card className="rounded-2xl border-white/10 bg-white/5 shadow-inner shadow-black/30">
+    <Card
+      className="rounded-2xl border-white/10 bg-white/5 shadow-inner shadow-black/30"
+      data-test-id={`flashcard-item-${proposal.id}`}
+      data-status={proposal.status}
+    >
       <CardHeader className="flex flex-wrap items-center justify-between gap-3 pb-0">
         <div className="flex items-center gap-3 text-xs uppercase tracking-[0.3em] text-slate-400">
           <span>Propozycja {index + 1}</span>
@@ -133,6 +142,7 @@ export function FlashcardListItem({
               </label>
               <Textarea
                 id={frontTextareaId}
+                data-test-id={`flashcard-front-input-${proposal.id}`}
                 className={cn(
                   "mt-2 rounded-xl bg-slate-950/40 text-sm text-white",
                   proposal.errors?.front
@@ -167,6 +177,7 @@ export function FlashcardListItem({
               </label>
               <Textarea
                 id={backTextareaId}
+                data-test-id={`flashcard-back-input-${proposal.id}`}
                 className={cn(
                   "mt-2 rounded-xl bg-slate-950/40 text-sm text-white",
                   proposal.errors?.back

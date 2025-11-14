@@ -22,6 +22,7 @@ const {
 ---
 
 <section
+  data-test-id="auth-page"
   class="relative min-h-screen overflow-hidden bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 px-4 py-16 text-white"
 >
   <div
@@ -50,7 +51,10 @@ const {
 
         {
           highlights.length > 0 && (
-            <dl class="grid gap-4 sm:grid-cols-2">
+            <dl
+              class="grid gap-4 sm:grid-cols-2"
+              data-test-id="auth-highlights"
+            >
               {highlights.map((item) => (
                 <div class="rounded-2xl border border-white/10 bg-white/5 p-5 backdrop-blur">
                   <dt class="text-xs uppercase tracking-[0.4em] text-slate-400">
@@ -67,6 +71,7 @@ const {
       </div>
 
       <div
+        data-test-id="auth-form-card"
         class="w-full max-w-md justify-self-center rounded-3xl border border-white/10 bg-slate-950/60 p-1.5 shadow-[0_20px_90px_rgba(8,47,73,0.65)] backdrop-blur"
       >
         <div class="rounded-[22px] bg-slate-950/80 p-10">

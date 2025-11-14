@@ -1,4 +1,7 @@
-<section class="relative min-h-screen bg-slate-950 text-white">
+<section
+  class="relative min-h-screen bg-slate-950 text-white"
+  data-test-id="welcome-section"
+>
   <div
     class="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(79,70,229,0.25),_transparent_55%)]"
     aria-hidden="true"
@@ -23,6 +26,7 @@
         class="flex flex-wrap items-center justify-center gap-4 lg:justify-start"
       >
         <a
+          data-test-id="welcome-start-generating"
           href="/generate"
           class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 px-8 py-3 text-lg font-semibold shadow-lg shadow-cyan-500/30 transition hover:translate-y-0.5"
         >
@@ -30,7 +34,10 @@
           <span aria-hidden="true">→</span>
         </a>
       </div>
-      <dl class="grid gap-6 text-left sm:grid-cols-3">
+      <dl
+        class="grid gap-6 text-left sm:grid-cols-3"
+        data-test-id="welcome-stats"
+      >
         <div>
           <dt class="text-xs uppercase tracking-[0.3em] text-slate-500">
             Limit tekstu
@@ -54,6 +61,7 @@
 
     <div
       id="how-it-works"
+      data-test-id="welcome-how-it-works"
       class="w-full rounded-3xl border border-white/10 bg-gradient-to-b from-white/5 to-white/0 p-8 shadow-[0_40px_120px_rgba(15,23,42,0.6)]"
     >
       <div class="space-y-8">
@@ -68,7 +76,7 @@
             Wszystkie funkcje znajdziesz w widoku <code>/generate</code>.
           </p>
         </div>
-        <ol class="space-y-6">
+        <ol class="space-y-6" data-test-id="welcome-steps">
           <li
             class="flex gap-4 rounded-2xl border border-white/10 bg-white/5 p-4"
           >

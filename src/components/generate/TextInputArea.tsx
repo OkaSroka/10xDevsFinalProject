@@ -132,7 +132,7 @@ export function TextInputArea({
   const describedBy = `${descriptionId} ${helperId}`;
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4" data-test-id="text-input-area">
       <div className="flex items-start justify-between gap-4">
         <label
           htmlFor={inputId}
@@ -145,6 +145,7 @@ export function TextInputArea({
 
       <Textarea
         id={inputId}
+        data-test-id="text-input-textarea"
         className={cn(
           "min-h-[360px] resize-none rounded-2xl bg-slate-950/40 text-base leading-relaxed text-white shadow-[inset_0_1px_24px_rgba(15,23,42,0.65)]",
           fieldTone,
@@ -160,13 +161,18 @@ export function TextInputArea({
         aria-describedby={describedBy}
       />
 
-      <p id={descriptionId} className="text-sm text-slate-300">
+      <p
+        id={descriptionId}
+        className="text-sm text-slate-300"
+        data-test-id="text-input-description"
+      >
         {description}
       </p>
       <p
         id={helperId}
         className={`text-sm font-medium ${helperTone}`}
         aria-live="polite"
+        data-test-id="text-input-helper"
       >
         {helperMessage}
       </p>

@@ -20,30 +20,53 @@ const isAuthPage = currentPath.startsWith("/auth/");
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body
-    class={`bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white ${user && !isAuthPage ? "pt-16" : ""} min-h-screen overflow-hidden`}
-  >
-    {
-      user && !isAuthPage && (
-        <nav class="fixed top-0 left-0 w-full border-b border-cyan-500/20 bg-gradient-to-r from-gray-900 via-gray-800 to-gray-900 backdrop-blur-md z-50">
-          <div class="container mx-auto flex items-center justify-between px-4 py-4">
+<body
+  data-test-id="app-shell"
+  class={`bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white ${user && !isAuthPage ? "pt-16" : ""} min-h-screen overflow-hidden`}
+>
+  {
+    user && !isAuthPage && (
+        <nav
+          data-test-id="layout-user-nav"
+          class="fixed top-0 left-0 w-full border-b border-cyan-500/20 bg-gradient-to-r from-slate-950 via-slate-900 to-slate-950 backdrop-blur-md z-50"
+        >
+          <div
+            data-test-id="layout-user-nav-inner"
+            class="container mx-auto flex items-center justify-between px-4 py-4"
+          >
             <p class="bg-gradient-to-r from-cyan-400 to-blue-400 bg-clip-text text-base font-semibold text-transparent">
               Witaj, {user.email}!
             </p>
-            <form action="/api/auth/logout" method="post">
-              <button
-                type="submit"
-                class="cursor-pointer rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 px-6 py-2 text-sm font-semibold text-white transition hover:translate-y-0.5"
+            <div class="flex items-center gap-4">
+              <a
+                data-test-id="layout-home-link"
+                href="/"
+                class="cursor-pointer rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 px-6 py-2 text-sm font-semibold text-white shadow-lg shadow-cyan-500/30 transition hover:translate-y-0.5"
               >
-                Wyloguj się
-              </button>
-            </form>
+                Home
+              </a>
+              <form
+                data-test-id="layout-logout-form"
+                action="/api/auth/logout"
+                method="post"
+              >
+                <button
+                  type="submit"
+                  data-test-id="layout-logout-button"
+                  class="cursor-pointer rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 px-6 py-2 text-sm font-semibold text-white transition hover:translate-y-0.5"
+                >
+                  Wyloguj się
+                </button>
+              </form>
+            </div>
           </div>
         </nav>
       )
-    }
+  }
+  <div data-test-id="layout-content">
     <slot />
-  </body>
+  </div>
+</body>
 </html>
 
 <style>

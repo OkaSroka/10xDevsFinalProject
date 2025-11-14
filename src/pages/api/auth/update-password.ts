@@ -37,12 +37,16 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
     if (error) {
       let errorMessage = error.message;
-      
+
       // Translate common Supabase error messages to Polish
-      if (error.message.includes("New password should be different from the old password")) {
+      if (
+        error.message.includes(
+          "New password should be different from the old password",
+        )
+      ) {
         errorMessage = "Nowe hasło musi być inne niż poprzednie.";
       }
-      
+
       return new Response(JSON.stringify({ error: errorMessage }), {
         status: 400,
       });

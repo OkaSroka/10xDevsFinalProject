@@ -29,7 +29,10 @@ export function BulkSaveButton({
   );
 
   return (
-    <Card className="rounded-2xl border-white/10 bg-slate-950/30">
+    <Card
+      className="rounded-2xl border-white/10 bg-slate-950/30"
+      data-test-id="bulk-save-panel"
+    >
       <CardContent className="flex flex-col gap-3 p-4 text-sm text-slate-200 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <p className="font-semibold text-white">
@@ -42,6 +45,7 @@ export function BulkSaveButton({
         <div className="flex flex-wrap gap-2">
           <Button
             size="sm"
+            data-test-id="bulk-save-accepted-button"
             className={cn(
               "bg-emerald-500 hover:bg-emerald-500/90",
               acceptedCount === 0 && "opacity-70",
@@ -54,6 +58,7 @@ export function BulkSaveButton({
           <Button
             size="sm"
             variant="secondary"
+            data-test-id="bulk-save-all-button"
             disabled={disabled || isSaving || totalCount === 0}
             onClick={onSaveAll}
           >

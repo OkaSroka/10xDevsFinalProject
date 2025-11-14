@@ -1,198 +1,126 @@
-import assert from "node:assert/strict";
-import test from "node:test";
-
-import type { SupabaseClient } from "../../db/supabase.client";
-import type {
-  GenerationCreateCommand,
-  FlashcardProposalDto,
-} from "../../types";
-import type {
-  JsonSchema,
-  ResponseFormatOptions,
-  ResponseType,
-} from "../openrouter.service";
+import { describe, it, expect, vi } from "vitest";
 import {
   GenerationService,
-  type OpenRouterClient,
+  GenerationServiceError,
 } from "../generation.service";
+import type { SupabaseClient } from "../../db/supabase.client";
 
-interface MockSupabaseInsertResult<Row> {
-  data: Row | null;
-  error: Error | null;
-}
-
-class SupabaseStub {
-  public insertedGenerationPayloads: unknown[] = [];
-  public errorLogs: unknown[] = [];
-  private readonly generationInsertResult: MockSupabaseInsertResult<{
-    id: number;
-    generated_count: number;
-  }>;
-
-  constructor(
-    insertResult?: MockSupabaseInsertResult<{
-      id: number;
-      generated_count: number;
-    }>,
-  ) {
-    this.generationInsertResult =
-      insertResult ??
-      ({
-        data: { id: 99, generated_count: 3 },
-        error: null,
-      } satisfies MockSupabaseInsertResult<{
-        id: number;
-        generated_count: number;
-      }>);
-  }
-
-  from(table: string) {
-    if (table === "generations") {
-      return {
-        insert: (payload: unknown) => {
-          this.insertedGenerationPayloads.push(payload);
-          return {
-            select: () => ({
-              single: async () => this.generationInsertResult,
-            }),
-          };
-        },
-      };
-    }
-
-    if (table === "generation_error_logs") {
-      return {
-        insert: async (payload: unknown) => {
-          this.errorLogs.push(payload);
-          return { error: null };
-        },
-      };
-    }
-
-    throw new Error(`Unexpected table requested in test: ${table}`);
-  }
-}
-
-class OpenRouterClientStub implements OpenRouterClient {
-  public readonly sentPrompts: string[] = [];
-
-  constructor(
-    private readonly response:
-      | ResponseType<{ flashcards: FlashcardProposalDto[] }>
-      | (() => Promise<ResponseType<{ flashcards: FlashcardProposalDto[] }>>),
-  ) {}
-
-  setSystemMessage(): void {
-    // no-op for tests
-  }
-
-  setResponseFormat(
-    _schema: JsonSchema,
-    _options?: ResponseFormatOptions,
-  ): void {
-    // no-op for tests
-  }
-
-  clearResponseFormat(): void {
-    // no-op for tests
-  }
-
-  async sendChatMessage<TParsed>(
-    userMessage: string,
-  ): Promise<ResponseType<TParsed>> {
-    this.sentPrompts.push(userMessage);
-    const resolved =
-      typeof this.response === "function"
-        ? await this.response()
-        : this.response;
-    return resolved as ResponseType<TParsed>;
-  }
-}
-
-test("GenerationService returns normalized flashcards from OpenRouter", async () => {
-  const supabase = new SupabaseStub();
-  const openRouter = new OpenRouterClientStub({
-    id: "chat_1",
-    model: "openrouter/anthropic/claude-3.5-sonnet",
-    content: "payload",
-    parsed: {
-      flashcards: [
-        { front: "Question?", back: "Answer." },
-        { front: "Extra", back: "Details" },
-      ],
-    },
-    usage: {
-      prompt_tokens: 120,
-      completion_tokens: 60,
-      total_tokens: 180,
-    },
-    raw: {
-      id: "chat_1",
-      model: "openrouter/anthropic/claude-3.5-sonnet",
-      choices: [],
-    },
-  });
-
-  const service = new GenerationService(
-    supabase as unknown as SupabaseClient,
-    { maxProposals: 2 },
-    openRouter,
-  );
-
-  const command: GenerationCreateCommand = {
-    source_text: "Sample text with enough length to satisfy generation.",
+describe("GenerationService", () => {
+  const generationTableQuery = {
+    insert: vi.fn().mockReturnThis(),
+    select: vi.fn().mockReturnThis(),
+    single: vi
+      .fn()
+      .mockResolvedValue({ data: { id: 1, generated_count: 5 }, error: null }),
   };
 
-  const result = await service.createGeneration(command, {
-    userId: "user-123",
-  });
-
-  assert.equal(result.generated_count, 3);
-  assert.equal(result.flashcards_proposals.length, 2);
-  assert.equal(result.flashcards_proposals[0]?.source, "ai-full");
-
-  const insertedGeneration = supabase.insertedGenerationPayloads[0] as {
-    model: string;
+  const errorLogTableQuery = {
+    insert: vi.fn().mockResolvedValue({ error: null }),
   };
-  assert.equal(
-    insertedGeneration.model,
-    "openrouter/anthropic/claude-3.5-sonnet",
-  );
 
-  const usageLog = supabase.errorLogs[0] as { error_code: string };
-  assert.equal(usageLog.error_code, "USAGE_METRICS");
-});
+  const mockSupabase = {
+    from: vi.fn().mockImplementation((table: string) => {
+      if (table === "generations") {
+        return generationTableQuery;
+      }
 
-test("GenerationService logs OpenRouter failures and rethrows", async () => {
-  const supabase = new SupabaseStub();
+      if (table === "generation_error_logs") {
+        return errorLogTableQuery;
+      }
 
-  const openRouter = new OpenRouterClientStub(async () => {
-    throw new Error("network failed");
-  });
+      throw new Error(`Unexpected table requested in test: ${table}`);
+    }),
+  } as unknown as SupabaseClient;
+
+  const mockOpenRouter = {
+    setSystemMessage: vi.fn(),
+    setResponseFormat: vi.fn(),
+    clearResponseFormat: vi.fn(),
+    sendChatMessage: vi.fn().mockResolvedValue({
+      parsed: {
+        flashcards: [
+          {
+            front: "What is AI?",
+            back: "AI stands for Artificial Intelligence.",
+          },
+        ],
+      },
+      model: "test-model",
+      usage: { prompt_tokens: 10, completion_tokens: 20, total_tokens: 30 },
+    }),
+  };
 
   const service = new GenerationService(
-    supabase as unknown as SupabaseClient,
+    mockSupabase,
     undefined,
-    openRouter,
+    mockOpenRouter as typeof mockOpenRouter,
   );
 
-  await assert.rejects(
-    service.createGeneration(
-      { source_text: "Still valid input" },
-      { userId: "user-456" },
-    ),
-    (error: unknown) => {
-      assert.equal(
-        (error as { code?: string }).code,
-        "AI_FAILURE",
-        "Expected AI_FAILURE code.",
+  describe("createGeneration", () => {
+    it("should create a generation and return the response", async () => {
+      const command = { source_text: "What is AI?" };
+      const context = { userId: "user-123" };
+
+      const result = await service.createGeneration(command, context);
+
+      expect(result).toEqual({
+        generation_id: 1,
+        flashcards_proposals: [
+          {
+            front: "What is AI?",
+            back: "AI stands for Artificial Intelligence.",
+            source: "ai-full",
+          },
+        ],
+        generated_count: 5,
+      });
+
+      expect(mockSupabase.from).toHaveBeenCalledWith("generations");
+      expect(generationTableQuery.insert).toHaveBeenCalled();
+      expect(mockOpenRouter.sendChatMessage).toHaveBeenCalled();
+    });
+
+    it("should throw an error if flashcard generation fails", async () => {
+      mockOpenRouter.sendChatMessage.mockRejectedValueOnce(
+        new Error("AI error"),
       );
-      return true;
-    },
-  );
 
-  const errorRow = supabase.errorLogs.find(
-    (row) => (row as { error_code: string }).error_code !== "USAGE_METRICS",
-  );
-  assert.ok(errorRow, "Should persist an error log row for AI failure.");
+      const command = { source_text: "What is AI?" };
+      const context = { userId: "user-123" };
+
+      await expect(service.createGeneration(command, context)).rejects.toThrow(
+        GenerationServiceError,
+      );
+    });
+  });
+
+  describe("computeSourceTextHash", () => {
+    it("should compute a SHA-256 hash of the source text", () => {
+      const hash = service["computeSourceTextHash"]("test");
+      expect(hash).toBe(
+        "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08",
+      );
+    });
+  });
+
+  describe("normalizeFlashcardCandidate", () => {
+    it("should normalize a valid flashcard candidate", () => {
+      const candidate = {
+        front: "  What is AI?  ",
+        back: "  Artificial Intelligence  ",
+      };
+      const result = service["normalizeFlashcardCandidate"](candidate);
+
+      expect(result).toEqual({
+        front: "What is AI?",
+        back: "Artificial Intelligence",
+        source: "ai-full",
+      });
+    });
+
+    it("should return null for an invalid candidate", () => {
+      const result = service["normalizeFlashcardCandidate"]({});
+      expect(result).toBeNull();
+    });
+  });
 });

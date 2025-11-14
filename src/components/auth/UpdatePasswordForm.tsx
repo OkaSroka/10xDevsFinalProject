@@ -117,8 +117,11 @@ export function UpdatePasswordForm() {
   };
 
   return (
-    <section aria-labelledby="update-password-title">
-      <Card className="bg-transparent px-5">
+    <section
+      aria-labelledby="update-password-title"
+      data-test-id="update-password-form-section"
+    >
+      <Card className="bg-transparent px-5" data-test-id="update-password-form-card">
         <CardHeader className="px-0 pt-0">
           <CardTitle
             id="update-password-title"
@@ -133,6 +136,7 @@ export function UpdatePasswordForm() {
         <CardContent className="space-y-6 px-0 pb-0">
           {status.type !== "idle" && (
             <Alert
+              data-test-id="update-password-form-status"
               variant={status.type === "error" ? "destructive" : "default"}
               className="bg-white/5 text-slate-100"
             >
@@ -145,7 +149,12 @@ export function UpdatePasswordForm() {
             </Alert>
           )}
 
-          <form className="space-y-5" noValidate onSubmit={handleSubmit}>
+          <form
+            className="space-y-5"
+            data-test-id="update-password-form"
+            noValidate
+            onSubmit={handleSubmit}
+          >
             <div className="space-y-2">
               <label
                 htmlFor="new-password"
@@ -160,6 +169,7 @@ export function UpdatePasswordForm() {
                 autoComplete="new-password"
                 placeholder="Wprowadź nowe hasło"
                 value={values.password}
+                data-test-id="update-password-new-input"
                 aria-invalid={shouldShowError("password")}
                 aria-describedby="new-password-helper"
                 onChange={handleChange("password")}
@@ -189,6 +199,7 @@ export function UpdatePasswordForm() {
                 autoComplete="new-password"
                 placeholder="Powtórz hasło"
                 value={values.confirmPassword}
+                data-test-id="update-password-confirm-input"
                 aria-invalid={shouldShowError("confirmPassword")}
                 aria-describedby="confirm-password-helper"
                 onChange={handleChange("confirmPassword")}
@@ -206,6 +217,7 @@ export function UpdatePasswordForm() {
 
             <Button
               type="submit"
+              data-test-id="update-password-submit-button"
               className="w-full cursor-pointer rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 text-base font-semibold text-white transition hover:translate-y-0.5"
               disabled={isSubmitting}
             >
