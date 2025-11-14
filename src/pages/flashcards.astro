@@ -1,0 +1,33 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { MyFlashcardsView } from "../components/flashcards/MyFlashcardsView";
+---
+
+<Layout title="Moje fiszki">
+  <main
+    class="bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 px-4 py-12 text-white"
+    data-test-id="flashcards-page"
+  >
+    <section
+      class="mx-auto max-w-7xl space-y-10"
+      aria-labelledby="my-flashcards-heading"
+      data-test-id="my-flashcards-section"
+    >
+      <header class="space-y-4 text-center">
+        <p class="text-sm uppercase tracking-[0.4em] text-slate-400">
+          Twoja kolekcja
+        </p>
+        <h1
+          id="my-flashcards-heading"
+          class="text-3xl font-semibold tracking-tight text-white md:text-5xl"
+        >
+          Moje fiszki
+        </h1>
+        <p class="text-base text-slate-300 md:text-lg">
+          Tutaj znajdziesz wszystkie swoje zapisane fiszki.
+        </p>
+      </header>
+      <MyFlashcardsView client:load />
+    </section>
+  </main>
+</Layout>
