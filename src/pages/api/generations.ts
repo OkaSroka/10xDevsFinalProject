@@ -80,16 +80,21 @@ async function parseRequestBody(
 
 /**
  * Ensures the request is authenticated and returns the Supabase user.
+ * Throws ApiError if user is not authenticated.
  */
-// Temporarily bypassing authentication for testing purposes
-async function getAuthenticatedUser(): Promise<User> {
+async function getAuthenticatedUser(locals: App.Locals): Promise<User> {
+  if (!locals.user) {
+    throw new ApiError(401, "Unauthorized. Please log in.");
+  }
+
+  // Return a User object with the authenticated user's data
   return {
-    id: "00000000-0000-0000-0000-000000000000",
+    id: locals.user.id,
     app_metadata: {},
     user_metadata: {},
     aud: "",
     created_at: "",
-    email: "test@example.com",
+    email: locals.user.email || "",
     phone: "",
     role: "",
     confirmed_at: "",
@@ -146,7 +151,7 @@ function handleError(error: unknown): Response {
 export const POST: APIRoute = async ({ request, locals }) => {
   try {
     const command = await parseRequestBody(request);
-    const user = await getAuthenticatedUser();
+    const user = await getAuthenticatedUser(locals);
 
     const generationService = createGenerationService(locals.supabase);
     const result = await generationService.createGeneration(command, {

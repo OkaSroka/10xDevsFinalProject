@@ -47,7 +47,7 @@ export function BulkSaveButton({
             size="sm"
             data-test-id="bulk-save-accepted-button"
             className={cn(
-              "bg-emerald-500 hover:bg-emerald-500/90",
+              "cursor-pointer bg-emerald-500 hover:bg-emerald-500/90",
               acceptedCount === 0 && "opacity-70",
             )}
             disabled={disabled || isSaving || acceptedCount === 0}
@@ -61,6 +61,7 @@ export function BulkSaveButton({
             data-test-id="bulk-save-all-button"
             disabled={disabled || isSaving || totalCount === 0}
             onClick={onSaveAll}
+            className="cursor-pointer"
           >
             {isSaving ? savingContent : "Zapisz wszystkie"}
           </Button>

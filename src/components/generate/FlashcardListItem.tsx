@@ -47,7 +47,7 @@ export function FlashcardListItem({
         size="sm"
         data-test-id={`flashcard-save-${proposal.id}`}
         onClick={() => onSaveEdit(proposal.id)}
-        className="bg-emerald-500 hover:bg-emerald-500/90"
+        className="cursor-pointer bg-emerald-500 hover:bg-emerald-500/90"
       >
         <Save className="size-4" />
         Zapisz
@@ -57,6 +57,7 @@ export function FlashcardListItem({
         variant="secondary"
         data-test-id={`flashcard-cancel-${proposal.id}`}
         onClick={() => onCancelEdit(proposal.id)}
+        className="cursor-pointer"
       >
         <Undo2 className="size-4" />
         Anuluj
@@ -70,9 +71,10 @@ export function FlashcardListItem({
         data-test-id={`flashcard-accept-toggle-${proposal.id}`}
         onClick={() => onToggleAccept(proposal.id)}
         disabled={proposal.isEditing}
+        className="cursor-pointer"
       >
         <CheckCircle2 className="size-4" />
-        {proposal.status === "accepted" ? "Cofnij akceptacje" : "Zatwierdz"}
+        {proposal.status === "accepted" ? "Cofnij akceptację" : "Zatwierdź"}
       </Button>
       <Button
         size="sm"
@@ -80,6 +82,7 @@ export function FlashcardListItem({
         data-test-id={`flashcard-edit-${proposal.id}`}
         onClick={() => onStartEdit(proposal.id)}
         disabled={proposal.isEditing}
+        className="cursor-pointer"
       >
         <Edit3 className="size-4" />
         Edytuj
@@ -87,13 +90,13 @@ export function FlashcardListItem({
       <Button
         size="sm"
         variant="ghost"
-        className="text-rose-300 hover:bg-rose-500/10"
+        className="cursor-pointer text-rose-300 hover:bg-rose-400/45"
         data-test-id={`flashcard-reject-${proposal.id}`}
         onClick={() => onReject(proposal.id)}
         disabled={proposal.isEditing}
       >
         <XCircle className="size-4" />
-        Odrzuc
+        Odrzuć
       </Button>
     </div>
   );
@@ -112,7 +115,7 @@ export function FlashcardListItem({
           <span>Propozycja {index + 1}</span>
           <Badge
             variant="outline"
-            className="bg-white/10 text-[0.65rem] tracking-[0.2em] border-white/20"
+            className="bg-white/10 text-[0.65rem] tracking-[0.2em] border-white/20 text-white"
           >
             {proposal.source}
           </Badge>

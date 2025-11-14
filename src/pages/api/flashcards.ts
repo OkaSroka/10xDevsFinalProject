@@ -49,16 +49,21 @@ async function parseRequestBody(
 
 /**
  * Ensures the incoming request is authenticated with Supabase Auth.
+ * Throws ApiError if user is not authenticated.
  */
-// Temporarily bypassing authentication for testing purposes
-async function getAuthenticatedUser(): Promise<User> {
+async function getAuthenticatedUser(locals: App.Locals): Promise<User> {
+  if (!locals.user) {
+    throw new ApiError(401, "Unauthorized. Please log in.");
+  }
+
+  // Return a User object with the authenticated user's data
   return {
-    id: "00000000-0000-0000-0000-000000000000",
+    id: locals.user.id,
     app_metadata: {},
     user_metadata: {},
     aud: "",
     created_at: "",
-    email: "test@example.com",
+    email: locals.user.email || "",
     phone: "",
     role: "",
     confirmed_at: "",
@@ -102,10 +107,12 @@ function handleError(error: unknown): Response {
 
 /**
  * GET /flashcards
- * Test endpoint to verify API is working
+ * Retrieves all flashcards for the authenticated user
  */
 export const GET: APIRoute = async ({ locals }) => {
   try {
+    const user = await getAuthenticatedUser(locals);
+
     if (!locals.supabase) {
       return Response.json(
         { error: "Supabase not initialized" },
@@ -116,7 +123,8 @@ export const GET: APIRoute = async ({ locals }) => {
     const { data, error } = await locals.supabase
       .from("flashcards")
       .select("*")
-      .limit(5);
+      .eq("user_id", user.id)
+      .order("created_at", { ascending: false });
 
     if (error) {
       return Response.json(
@@ -127,7 +135,7 @@ export const GET: APIRoute = async ({ locals }) => {
 
     return Response.json({ flashcards: data || [], count: data?.length || 0 });
   } catch (error) {
-    return Response.json({ error: String(error) }, { status: 500 });
+    return handleError(error);
   }
 };
 
@@ -157,7 +165,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
       JSON.stringify(command),
     );
 
-    const user = await getAuthenticatedUser();
+    const user = await getAuthenticatedUser(locals);
     // eslint-disable-next-line no-console
     console.log("POST /flashcards - Authenticated user:", user.id);
 
