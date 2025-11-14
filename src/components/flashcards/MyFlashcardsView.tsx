@@ -139,7 +139,8 @@ export function MyFlashcardsView() {
     <div className="space-y-4">
       <div className="mb-6 flex items-center justify-between">
         <p className="text-sm text-slate-400">
-          Łącznie fiszek: <span className="font-semibold">{flashcards.length}</span>
+          Łącznie fiszek:{" "}
+          <span className="font-semibold">{flashcards.length}</span>
         </p>
       </div>
 

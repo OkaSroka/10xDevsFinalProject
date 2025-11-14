@@ -108,7 +108,6 @@ async function getAuthenticatedUser(locals: App.Locals): Promise<User> {
  * Translates thrown errors into HTTP responses and logs unexpected issues.
  */
 function handleError(error: unknown): Response {
-  // eslint-disable-next-line no-console
   console.error("API Error:", error);
 
   if (error instanceof ApiError) {
@@ -122,7 +121,6 @@ function handleError(error: unknown): Response {
   }
 
   if (error instanceof GenerationServiceError) {
-    // eslint-disable-next-line no-console
     console.error(
       "GenerationServiceError:",
       error.message,
@@ -140,7 +138,6 @@ function handleError(error: unknown): Response {
     );
   }
 
-  // eslint-disable-next-line no-console
   console.error("Unexpected error:", error);
   return Response.json(
     { error: "Internal server error.", debug: String(error) },

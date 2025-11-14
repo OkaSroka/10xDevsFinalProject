@@ -19,8 +19,6 @@ type FormStatus =
   | { type: "error"; message: string }
   | { type: "success"; message: string };
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 export function ResetPasswordForm() {
   const [email, setEmail] = useState("");
   const [touched, setTouched] = useState(false);
@@ -74,7 +72,7 @@ export function ResetPasswordForm() {
           "Jeśli konto istnieje, wyślemy bezpieczny link resetujący na podany adres.",
       });
       setIsSubmitting(false);
-    } catch (error) {
+    } catch {
       setStatus({
         type: "error",
         message: "Wystąpił błąd połączenia. Spróbuj ponownie później.",
@@ -88,7 +86,10 @@ export function ResetPasswordForm() {
       aria-labelledby="reset-password-title"
       data-test-id="reset-password-form-section"
     >
-      <Card className="bg-transparent px-5" data-test-id="reset-password-form-card">
+      <Card
+        className="bg-transparent px-5"
+        data-test-id="reset-password-form-card"
+      >
         <CardHeader className="px-0 pt-0">
           <CardTitle
             id="reset-password-title"

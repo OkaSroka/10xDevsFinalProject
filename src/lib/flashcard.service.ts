@@ -92,7 +92,6 @@ export class FlashcardService {
       .select("id, front, back, source, generation_id");
 
     if (error || !data) {
-      // eslint-disable-next-line no-console
       console.error("FlashcardService insert error:", error);
       throw new FlashcardServiceError(
         "Unable to store flashcards at this time.",
