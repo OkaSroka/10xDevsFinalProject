@@ -127,7 +127,9 @@ export class GenerationService {
     context: GenerationContext,
   ): Promise<CreateGenerationResponseDto> {
     const startedAt = Date.now();
-    const sourceTextHash = await this.computeSourceTextHash(command.source_text);
+    const sourceTextHash = await this.computeSourceTextHash(
+      command.source_text,
+    );
 
     const generationResult = await this.generateFlashcardProposals(
       command.source_text,

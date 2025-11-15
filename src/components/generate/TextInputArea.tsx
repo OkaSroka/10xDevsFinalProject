@@ -91,11 +91,11 @@ export function TextInputArea({
       )} znaków, aby zmieścić się w limicie.`;
     }
 
-    return "Swietnie! Tekst spelnia wymagania dla generowania fiszek.";
+    return "Świetnie! Tekst spełnia wymagania dla generowania fiszek.";
   }, [charactersCount, maxCharacters, minCharacters, status]);
 
   const characterLabel = useMemo(() => {
-    return `${charactersCount.toLocaleString("pl-PL")} znakow`;
+    return `${charactersCount.toLocaleString("pl-PL")} znaków`;
   }, [charactersCount]);
 
   const showError =

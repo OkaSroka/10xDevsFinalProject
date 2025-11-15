@@ -9,6 +9,17 @@ import {
   CardFooter,
   CardHeader,
 } from "@/components/ui/card";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import type { FlashcardSource } from "@/types";
 
 interface SavedFlashcard {
@@ -55,10 +66,6 @@ export function MyFlashcardsView() {
   }
 
   async function handleDelete(id: number) {
-    if (!confirm("Czy na pewno chcesz usunąć tę fiszkę?")) {
-      return;
-    }
-
     try {
       const response = await fetch(`/api/flashcards/${id}`, {
         method: "DELETE",
@@ -71,7 +78,9 @@ export function MyFlashcardsView() {
       // Remove from local state
       setFlashcards((prev) => prev.filter((f) => f.id !== id));
     } catch (err) {
-      alert(err instanceof Error ? err.message : "Failed to delete flashcard");
+      setError(
+        err instanceof Error ? err.message : "Failed to delete flashcard",
+      );
     }
   }
 
@@ -179,16 +188,39 @@ export function MyFlashcardsView() {
             </CardContent>
 
             <CardFooter className="border-t border-white/10 pt-4">
-              <Button
-                size="sm"
-                variant="ghost"
-                className="cursor-pointer text-rose-300 hover:bg-rose-400/45"
-                onClick={() => handleDelete(flashcard.id)}
-                data-test-id={`delete-flashcard-${flashcard.id}`}
-              >
-                <Trash2 className="size-4" />
-                Usuń
-              </Button>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button
+                    size="sm"
+                    variant="ghost"
+                    className="cursor-pointer text-rose-300 hover:bg-rose-400/45"
+                    data-test-id={`delete-flashcard-${flashcard.id}`}
+                  >
+                    <Trash2 className="size-4" />
+                    Usuń
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Usunąć fiszkę?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      Czy na pewno chcesz usunąć tę fiszkę? Tej operacji nie
+                      można cofnąć.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel className="cursor-pointer">
+                      Anuluj
+                    </AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => handleDelete(flashcard.id)}
+                      className="cursor-pointer bg-rose-500 hover:bg-rose-600"
+                    >
+                      Usuń
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </CardFooter>
           </Card>
         ))}
