@@ -146,37 +146,43 @@ function handleError(error: unknown): Response {
 }
 
 export const POST: APIRoute = async ({ request, locals }) => {
-  console.log("[POST /api/generations] Request started");
-  console.log("[POST /api/generations] Has locals:", !!locals);
-  console.log("[POST /api/generations] Has runtime:", !!locals.runtime);
-  console.log("[POST /api/generations] Has supabase:", !!locals.supabase);
+  console.error("[POST /api/generations] Request started");
+  console.error("[POST /api/generations] Has locals:", !!locals);
+  console.error("[POST /api/generations] Has runtime:", !!locals.runtime);
+  console.error("[POST /api/generations] Has supabase:", !!locals.supabase);
 
   try {
-    console.log("[POST /api/generations] Parsing request body...");
+    console.error("[POST /api/generations] Parsing request body...");
     const command = await parseRequestBody(request);
-    console.log("[POST /api/generations] Body parsed, source_text length:", command.source_text.length);
+    console.error(
+      "[POST /api/generations] Body parsed, source_text length:",
+      command.source_text.length,
+    );
 
-    console.log("[POST /api/generations] Getting authenticated user...");
+    console.error("[POST /api/generations] Getting authenticated user...");
     const user = await getAuthenticatedUser(locals);
-    console.log("[POST /api/generations] User authenticated:", user.id);
+    console.error("[POST /api/generations] User authenticated:", user.id);
 
     // Get runtime env (Cloudflare) or fallback to import.meta.env (local dev)
     const runtimeEnv = locals.runtime?.env;
-    console.log("[POST /api/generations] Has runtime env:", !!runtimeEnv);
-    console.log("[POST /api/generations] Has OPENROUTER_API_KEY:", !!runtimeEnv?.OPENROUTER_API_KEY);
+    console.error("[POST /api/generations] Has runtime env:", !!runtimeEnv);
+    console.error(
+      "[POST /api/generations] Has OPENROUTER_API_KEY:",
+      !!runtimeEnv?.OPENROUTER_API_KEY,
+    );
 
-    console.log("[POST /api/generations] Creating generation service...");
+    console.error("[POST /api/generations] Creating generation service...");
     const generationService = createGenerationService(
       locals.supabase,
       runtimeEnv,
     );
-    console.log("[POST /api/generations] Generation service created");
+    console.error("[POST /api/generations] Generation service created");
 
-    console.log("[POST /api/generations] Calling createGeneration...");
+    console.error("[POST /api/generations] Calling createGeneration...");
     const result = await generationService.createGeneration(command, {
       userId: user.id,
     });
-    console.log("[POST /api/generations] Generation completed successfully");
+    console.error("[POST /api/generations] Generation completed successfully");
 
     return Response.json(result, { status: 201 });
   } catch (error) {
