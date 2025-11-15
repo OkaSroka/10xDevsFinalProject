@@ -25,21 +25,16 @@ export const onRequest = defineMiddleware(
     const runtimeEnv = locals.runtime?.env;
     console.error("[Middleware] Has runtime env:", !!runtimeEnv);
 
-    try {
-      // Create server instance with proper cookie handling for SSR
-      console.error("[Middleware] Creating Supabase instance...");
-      const supabase = createSupabaseServerInstance(runtimeEnv, {
-        cookies,
-        headers: request.headers,
-      });
-      console.error("[Middleware] Supabase instance created");
+    // Create server instance with proper cookie handling for SSR
+    console.error("[Middleware] Creating Supabase instance...");
+    const supabase = createSupabaseServerInstance(runtimeEnv, {
+      cookies,
+      headers: request.headers,
+    });
+    console.error("[Middleware] Supabase instance created");
 
-      // Make supabase available in all routes
-      locals.supabase = supabase;
-    } catch (error) {
-      console.error("[Middleware] Error creating Supabase instance:", error);
-      throw error;
-    }
+    // Make supabase available in all routes
+    locals.supabase = supabase;
 
     // Skip auth check for API endpoints
     if (PUBLIC_API_PATHS.includes(url.pathname)) {
