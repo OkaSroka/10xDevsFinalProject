@@ -1,4 +1,5 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
+import type { APIContext } from "astro";
 
 // Mock the Supabase client module before imports
 const mockSignUp = vi.fn();
@@ -37,8 +38,11 @@ describe("POST /api/auth/signup", () => {
       }),
     });
 
-    const cookies = {} as any;
-    const response = await POST({ request, cookies } as any);
+    const cookies = {} as APIContext["cookies"];
+    const response = await POST({
+      request,
+      cookies,
+    } as APIContext);
     const data = await response.json();
 
     expect(response.status).toBe(200);
@@ -63,8 +67,11 @@ describe("POST /api/auth/signup", () => {
       }),
     });
 
-    const cookies = {} as any;
-    const response = await POST({ request, cookies } as any);
+    const cookies = {} as APIContext["cookies"];
+    const response = await POST({
+      request,
+      cookies,
+    } as APIContext);
     const data = await response.json();
 
     expect(response.status).toBe(400);
@@ -82,8 +89,11 @@ describe("POST /api/auth/signup", () => {
       }),
     });
 
-    const cookies = {} as any;
-    const response = await POST({ request, cookies } as any);
+    const cookies = {} as APIContext["cookies"];
+    const response = await POST({
+      request,
+      cookies,
+    } as APIContext);
     const data = await response.json();
 
     expect(response.status).toBe(400);
@@ -109,8 +119,11 @@ describe("POST /api/auth/signup", () => {
       }),
     });
 
-    const cookies = {} as any;
-    const response = await POST({ request, cookies } as any);
+    const cookies = {} as APIContext["cookies"];
+    const response = await POST({
+      request,
+      cookies,
+    } as APIContext);
     const data = await response.json();
 
     expect(response.status).toBe(400);
@@ -136,13 +149,15 @@ describe("POST /api/auth/signup", () => {
       }),
     });
 
-    const cookies = {} as any;
-    const response = await POST({ request, cookies } as any);
+    const cookies = {} as APIContext["cookies"];
+    const response = await POST({
+      request,
+      cookies,
+    } as APIContext);
     const data = await response.json();
 
     expect(response.status).toBe(400);
     expect(data.code).toBe("some_error");
     expect(data.error).toBe("Some auth error");
   });
-
 });
