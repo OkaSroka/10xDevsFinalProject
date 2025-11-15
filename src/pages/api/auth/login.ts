@@ -9,7 +9,7 @@ const loginSchema = z.object({
 
 export const prerender = false;
 
-export const POST: APIRoute = async ({ request, cookies }) => {
+export const POST: APIRoute = async ({ request, cookies, locals }) => {
   try {
     const body = await request.json();
 
@@ -27,7 +27,10 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
     const { email, password } = result.data;
 
-    const supabase = createSupabaseServerInstance({
+    // Get runtime env from locals (undefined in local dev)
+    const runtimeEnv = locals.runtime?.env;
+
+    const supabase = createSupabaseServerInstance(runtimeEnv, {
       cookies,
       headers: request.headers,
     });

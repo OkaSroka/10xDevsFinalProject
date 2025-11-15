@@ -3,6 +3,16 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { Database } from "./db/database.types";
 
+// Cloudflare runtime environment type
+interface CloudflareRuntime {
+  env: {
+    SUPABASE_URL: string;
+    SUPABASE_KEY: string;
+    OPENROUTER_API_KEY: string;
+    OPENROUTER_MODEL?: string;
+  };
+}
+
 declare global {
   namespace App {
     interface Locals {
@@ -11,6 +21,7 @@ declare global {
         id: string;
         email?: string;
       };
+      runtime: CloudflareRuntime;
     }
   }
 }
