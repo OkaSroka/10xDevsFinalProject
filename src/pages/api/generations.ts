@@ -177,6 +177,23 @@ function createGenerationService(
     runtimeEnv?.OPENROUTER_MODEL || import.meta.env.OPENROUTER_MODEL
   )?.trim();
 
+  // Validate API key exists
+  if (!apiKey) {
+    console.error("[createGenerationService] Missing OPENROUTER_API_KEY!");
+    console.error("[createGenerationService] Runtime env:", !!runtimeEnv);
+    console.error(
+      "[createGenerationService] Runtime OPENROUTER_API_KEY:",
+      !!runtimeEnv?.OPENROUTER_API_KEY,
+    );
+    console.error(
+      "[createGenerationService] Import.meta OPENROUTER_API_KEY:",
+      !!import.meta.env.OPENROUTER_API_KEY,
+    );
+    throw new Error(
+      "OPENROUTER_API_KEY is not configured. Please set it in environment variables.",
+    );
+  }
+
   const openRouter = new OpenRouterService({
     apiKey,
     model: configuredModel || undefined,
