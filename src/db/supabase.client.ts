@@ -36,7 +36,11 @@ function getEnv(runtimeEnv?: RuntimeEnv) {
 // Helper function to create a basic Supabase client with runtime env
 export function createSupabaseClient(env?: RuntimeEnv) {
   const { SUPABASE_URL, SUPABASE_KEY } = getEnv(env);
-  return createClient<Database>(SUPABASE_URL, SUPABASE_KEY);
+  return createClient<Database>(SUPABASE_URL, SUPABASE_KEY, {
+    auth: {
+      flowType: "pkce",
+    },
+  });
 }
 
 export type SupabaseClient = ReturnType<typeof createSupabaseClient>;
@@ -78,6 +82,9 @@ export const createSupabaseServerInstance = (
 
   const supabase = createServerClient<Database>(SUPABASE_URL, SUPABASE_KEY, {
     cookieOptions,
+    auth: {
+      flowType: "pkce",
+    },
     cookies: {
       getAll() {
         return parseCookieHeader(context.headers.get("Cookie") ?? "");
