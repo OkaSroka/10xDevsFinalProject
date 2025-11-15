@@ -33,7 +33,9 @@ export const GET: APIRoute = async ({ locals }) => {
         },
         body: JSON.stringify({
           model: "meta-llama/llama-3.2-3b-instruct:free",
-          messages: [{ role: "user", content: "Say 'test successful' in 3 words" }],
+          messages: [
+            { role: "user", content: "Say 'test successful' in 3 words" },
+          ],
           max_tokens: 20,
         }),
       },
