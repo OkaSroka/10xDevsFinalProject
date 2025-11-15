@@ -18,17 +18,28 @@ const PUBLIC_API_PATHS = [
 
 export const onRequest = defineMiddleware(
   async ({ locals, cookies, url, request, redirect }, next) => {
+    console.log(`[Middleware] ${request.method} ${url.pathname}`);
+    console.log("[Middleware] Has runtime:", !!locals.runtime);
+
     // Get Cloudflare runtime env (undefined in local dev)
     const runtimeEnv = locals.runtime?.env;
+    console.log("[Middleware] Has runtime env:", !!runtimeEnv);
 
-    // Create server instance with proper cookie handling for SSR
-    const supabase = createSupabaseServerInstance(runtimeEnv, {
-      cookies,
-      headers: request.headers,
-    });
+    try {
+      // Create server instance with proper cookie handling for SSR
+      console.log("[Middleware] Creating Supabase instance...");
+      const supabase = createSupabaseServerInstance(runtimeEnv, {
+        cookies,
+        headers: request.headers,
+      });
+      console.log("[Middleware] Supabase instance created");
 
-    // Make supabase available in all routes
-    locals.supabase = supabase;
+      // Make supabase available in all routes
+      locals.supabase = supabase;
+    } catch (error) {
+      console.error("[Middleware] Error creating Supabase instance:", error);
+      throw error;
+    }
 
     // Skip auth check for API endpoints
     if (PUBLIC_API_PATHS.includes(url.pathname)) {
