@@ -2,6 +2,20 @@ import type { APIRoute } from "astro";
 import { createSupabaseServerInstance } from "../../../db/supabase.client";
 import { z } from "zod";
 
+// Helper to get site URL from env or request
+function getSiteUrl(request: Request, runtimeEnv?: { SITE_URL?: string }): string {
+  // Try runtime env first (Cloudflare production)
+  if (runtimeEnv?.SITE_URL) {
+    return runtimeEnv.SITE_URL;
+  }
+  // Fallback to import.meta.env for local dev
+  if (import.meta.env.SITE_URL) {
+    return import.meta.env.SITE_URL;
+  }
+  // Final fallback to request origin
+  return new URL(request.url).origin;
+}
+
 const resetPasswordSchema = z.object({
   email: z.string().email("Invalid email address"),
 });
@@ -34,8 +48,9 @@ export const POST: APIRoute = async ({ request, cookies, locals }) => {
       headers: request.headers,
     });
 
+    const siteUrl = getSiteUrl(request, runtimeEnv);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${new URL(request.url).origin}/auth/reset-password`,
+      redirectTo: `${siteUrl}/auth/reset-password`,
     });
 
     // Always return success to prevent email enumeration

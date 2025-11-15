@@ -2,6 +2,20 @@ import type { APIRoute } from "astro";
 import { createSupabaseServerInstance } from "../../../db/supabase.client";
 import { z } from "zod";
 
+// Helper to get site URL from env or request
+function getSiteUrl(request: Request, runtimeEnv?: { SITE_URL?: string }): string {
+  // Try runtime env first (Cloudflare production)
+  if (runtimeEnv?.SITE_URL) {
+    return runtimeEnv.SITE_URL;
+  }
+  // Fallback to import.meta.env for local dev
+  if (import.meta.env.SITE_URL) {
+    return import.meta.env.SITE_URL;
+  }
+  // Final fallback to request origin
+  return new URL(request.url).origin;
+}
+
 const signupSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
@@ -35,11 +49,12 @@ export const POST: APIRoute = async ({ request, cookies, locals }) => {
       headers: request.headers,
     });
 
+    const siteUrl = getSiteUrl(request, runtimeEnv);
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: `${new URL(request.url).origin}/auth/login`,
+        emailRedirectTo: `${siteUrl}/auth/login`,
       },
     });
 
