@@ -67,6 +67,13 @@ export const createSupabaseServerInstance = (
     cookies: AstroCookies;
   },
 ) => {
+  // Validate context
+  if (!context || !context.headers || !context.cookies) {
+    throw new Error(
+      "Invalid context: headers and cookies are required for server instance",
+    );
+  }
+
   const { SUPABASE_URL, SUPABASE_KEY } = getEnv(env);
 
   const supabase = createServerClient<Database>(SUPABASE_URL, SUPABASE_KEY, {
