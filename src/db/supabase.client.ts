@@ -4,21 +4,42 @@ import { createServerClient, type CookieOptionsWithName } from "@supabase/ssr";
 
 import type { Database } from "../db/database.types";
 
-const supabaseUrl = import.meta.env.SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.SUPABASE_KEY;
+// Type for Cloudflare runtime env
+interface RuntimeEnv {
+  SUPABASE_URL: string;
+  SUPABASE_KEY: string;
+}
 
-if (!supabaseUrl || !supabaseAnonKey) {
+// Helper function to get env variables - supports both Cloudflare runtime and local dev
+function getEnv(runtimeEnv?: RuntimeEnv) {
+  // Try runtime env first (Cloudflare)
+  if (runtimeEnv?.SUPABASE_URL && runtimeEnv?.SUPABASE_KEY) {
+    return {
+      SUPABASE_URL: runtimeEnv.SUPABASE_URL,
+      SUPABASE_KEY: runtimeEnv.SUPABASE_KEY,
+    };
+  }
+
+  // Fallback to import.meta.env for local development
+  if (import.meta.env.SUPABASE_URL && import.meta.env.SUPABASE_KEY) {
+    return {
+      SUPABASE_URL: import.meta.env.SUPABASE_URL,
+      SUPABASE_KEY: import.meta.env.SUPABASE_KEY,
+    };
+  }
+
   throw new Error(
     "Missing required environment variables: SUPABASE_URL and SUPABASE_KEY must be set",
   );
 }
 
-export const supabaseClient = createClient<Database>(
-  supabaseUrl,
-  supabaseAnonKey,
-);
+// Helper function to create a basic Supabase client with runtime env
+export function createSupabaseClient(env?: RuntimeEnv) {
+  const { SUPABASE_URL, SUPABASE_KEY } = getEnv(env);
+  return createClient<Database>(SUPABASE_URL, SUPABASE_KEY);
+}
 
-export type SupabaseClient = typeof supabaseClient;
+export type SupabaseClient = ReturnType<typeof createSupabaseClient>;
 
 // Cookie options for SSR
 export const cookieOptions: CookieOptionsWithName = {
@@ -39,11 +60,16 @@ function parseCookieHeader(
 }
 
 // Create Supabase server instance for SSR with proper cookie handling
-export const createSupabaseServerInstance = (context: {
-  headers: Headers;
-  cookies: AstroCookies;
-}) => {
-  const supabase = createServerClient<Database>(supabaseUrl, supabaseAnonKey, {
+export const createSupabaseServerInstance = (
+  env: RuntimeEnv | undefined,
+  context: {
+    headers: Headers;
+    cookies: AstroCookies;
+  },
+) => {
+  const { SUPABASE_URL, SUPABASE_KEY } = getEnv(env);
+
+  const supabase = createServerClient<Database>(SUPABASE_URL, SUPABASE_KEY, {
     cookieOptions,
     cookies: {
       getAll() {

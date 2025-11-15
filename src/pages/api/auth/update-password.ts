@@ -8,7 +8,7 @@ const updatePasswordSchema = z.object({
   password: z.string().min(8, "Hasło musi mieć co najmniej 8 znaków."),
 });
 
-export const POST: APIRoute = async ({ request, cookies }) => {
+export const POST: APIRoute = async ({ request, cookies, locals }) => {
   try {
     const body = await request.json();
     const result = updatePasswordSchema.safeParse(body);
@@ -24,8 +24,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
     const { password } = result.data;
 
+    // Get runtime env from locals (undefined in local dev)
+    const runtimeEnv = locals.runtime?.env;
+
     // Use server instance to get the current session
-    const supabase = createSupabaseServerInstance({
+    const supabase = createSupabaseServerInstance(runtimeEnv, {
       cookies,
       headers: request.headers,
     });
