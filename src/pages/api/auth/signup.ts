@@ -3,7 +3,10 @@ import { createSupabaseServerInstance } from "../../../db/supabase.client";
 import { z } from "zod";
 
 // Helper to get site URL from env or request
-function getSiteUrl(request: Request, runtimeEnv?: { SITE_URL?: string }): string {
+function getSiteUrl(
+  request: Request,
+  runtimeEnv?: { SITE_URL?: string },
+): string {
   // Try runtime env first (Cloudflare production)
   if (runtimeEnv?.SITE_URL) {
     return runtimeEnv.SITE_URL;
