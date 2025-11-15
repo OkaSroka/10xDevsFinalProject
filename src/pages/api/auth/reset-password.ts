@@ -52,8 +52,9 @@ export const POST: APIRoute = async ({ request, cookies, locals }) => {
     });
 
     const siteUrl = getSiteUrl(request, runtimeEnv);
+    const redirectUrl = new URL("/auth/reset-password", siteUrl).toString();
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${siteUrl}/auth/reset-password`,
+      redirectTo: redirectUrl,
     });
 
     // Always return success to prevent email enumeration
