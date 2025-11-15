@@ -10,6 +10,7 @@ interface CloudflareRuntime {
     SUPABASE_KEY: string;
     OPENROUTER_API_KEY: string;
     OPENROUTER_MODEL?: string;
+    SITE_URL?: string;
   };
 }
 
@@ -31,6 +32,7 @@ interface ImportMetaEnv {
   readonly SUPABASE_KEY: string;
   readonly OPENROUTER_API_KEY: string;
   readonly OPENROUTER_MODEL?: string;
+  readonly SITE_URL?: string;
   // more env variables...
 }
 

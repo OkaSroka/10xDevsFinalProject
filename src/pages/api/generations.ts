@@ -150,7 +150,9 @@ export const POST: APIRoute = async ({ request, locals }) => {
     const command = await parseRequestBody(request);
     const user = await getAuthenticatedUser(locals);
 
-    const generationService = createGenerationService(locals.supabase);
+    // Get runtime env (Cloudflare) or fallback to import.meta.env (local dev)
+    const runtimeEnv = locals.runtime?.env;
+    const generationService = createGenerationService(locals.supabase, runtimeEnv);
     const result = await generationService.createGeneration(command, {
       userId: user.id,
     });
@@ -161,10 +163,16 @@ export const POST: APIRoute = async ({ request, locals }) => {
   }
 };
 
-function createGenerationService(supabase: SupabaseClient): GenerationService {
-  const configuredModel = import.meta.env.OPENROUTER_MODEL?.trim();
+function createGenerationService(
+  supabase: SupabaseClient,
+  runtimeEnv?: { OPENROUTER_API_KEY: string; OPENROUTER_MODEL?: string },
+): GenerationService {
+  // Get env variables - try runtime env first, fallback to import.meta.env
+  const apiKey = runtimeEnv?.OPENROUTER_API_KEY || import.meta.env.OPENROUTER_API_KEY;
+  const configuredModel = (runtimeEnv?.OPENROUTER_MODEL || import.meta.env.OPENROUTER_MODEL)?.trim();
+
   const openRouter = new OpenRouterService({
-    apiKey: import.meta.env.OPENROUTER_API_KEY,
+    apiKey,
     model: configuredModel || undefined,
     logger: console,
   });
