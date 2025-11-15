@@ -105,6 +105,21 @@ npx playwright install
 ├── public/ # Public assets
 ```
 
+## Documentation
+
+Project documentation is located in the `.ai/` directory:
+
+- **[Product Requirements Document (PRD)](.ai/prd.md)** - Complete product specification and requirements
+- [API Plan](.ai/api-plan.md) - API endpoint design and specifications
+- [Auth Specification](.ai/auth-spec.md) - Authentication and authorization details
+- [Database Plan](.ai/db-plan.md) - Database schema and design
+- [Tech Stack](.ai/tech-stack.md) - Technology stack decisions and rationale
+- [Test Plan](.ai/test-plan.md) - Testing strategy and coverage
+
+Additional guides are available in the `docs/` directory:
+
+- [Auth Guide](docs/auth-guide.md) - Implementation guide for authentication
+
 ## AI Development Support
 
 This project is configured with AI development tools to enhance the development experience, providing guidelines for:
