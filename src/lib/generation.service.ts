@@ -1,5 +1,3 @@
-import { createHash } from "node:crypto";
-
 import type { SupabaseClient } from "../db/supabase.client";
 import type {
   CreateGenerationResponseDto,
@@ -129,7 +127,9 @@ export class GenerationService {
     context: GenerationContext,
   ): Promise<CreateGenerationResponseDto> {
     const startedAt = Date.now();
-    const sourceTextHash = this.computeSourceTextHash(command.source_text);
+    const sourceTextHash = await this.computeSourceTextHash(
+      command.source_text,
+    );
 
     const generationResult = await this.generateFlashcardProposals(
       command.source_text,
@@ -282,8 +282,13 @@ export class GenerationService {
     }
   }
 
-  private computeSourceTextHash(sourceText: string): string {
-    return createHash("sha256").update(sourceText, "utf8").digest("hex");
+  private async computeSourceTextHash(sourceText: string): Promise<string> {
+    // Use Web Crypto API (works in Cloudflare Workers and modern browsers)
+    const encoder = new TextEncoder();
+    const data = encoder.encode(sourceText);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return hashArray.map((b) => b.toString(16).padStart(2, "0")).join("");
   }
 
   private configureOpenRouterClient(): void {

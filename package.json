@@ -23,6 +23,7 @@
     "@astrojs/cloudflare": "^12.3.2",
     "@astrojs/react": "^4.3.1",
     "@astrojs/sitemap": "^3.5.1",
+    "@radix-ui/react-alert-dialog": "^1.1.15",
     "@radix-ui/react-slot": "^1.2.4",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.78.0",
@@ -44,6 +45,7 @@
     "@eslint/compat": "1.2.7",
     "@eslint/js": "9.23.0",
     "@playwright/test": "^1.56.1",
+    "@przeprogramowani/10x-mvp-tracker": "^1.0.0",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.0",
     "@testing-library/user-event": "^14.6.1",
@@ -70,8 +72,7 @@
     "prettier-plugin-astro": "0.14.1",
     "supabase": "^2.54.11",
     "typescript-eslint": "8.28.0",
-    "vitest": "^4.0.9",
-    "@przeprogramowani/10x-mvp-tracker": "^1.0.0"
+    "vitest": "^4.0.9"
   },
   "overrides": {
     "fastmcp": "^3.23.0"

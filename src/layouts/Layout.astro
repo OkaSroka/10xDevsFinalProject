@@ -22,7 +22,7 @@ const isAuthPage = currentPath.startsWith("/auth/");
   </head>
   <body
     data-test-id="app-shell"
-    class={`bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white min-h-screen overflow-y-auto`}
+    class={`bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white h-full min-h-screen overflow-y-auto`}
   >
     {
       user && !isAuthPage && (
@@ -91,7 +91,7 @@ const isAuthPage = currentPath.startsWith("/auth/");
     }
     <div
       data-test-id="layout-content"
-      class={user && !isAuthPage ? "pt-16" : ""}
+      class={user && !isAuthPage ? "h-full pt-16" : "h-full"}
     >
       <slot />
     </div>

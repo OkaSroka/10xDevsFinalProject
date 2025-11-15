@@ -1,5 +1,6 @@
 import { describe, expect, it, vi, beforeEach } from "vitest";
 import { GET, POST } from "../flashcards";
+import { DELETE } from "../flashcards/[flashcardId]";
 import type { APIContext } from "astro";
 
 describe("GET /api/flashcards", () => {
@@ -41,7 +42,7 @@ describe("GET /api/flashcards", () => {
     const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: mockSupabase,
-    } as Pick<APIContext["locals"], "user" | "supabase">;
+    } as unknown as Pick<APIContext["locals"], "user" | "supabase">;
 
     const response = await GET({ locals } as APIContext);
     const data = await response.json();
@@ -56,7 +57,7 @@ describe("GET /api/flashcards", () => {
     const locals = {
       user: null,
       supabase: {},
-    } as Pick<APIContext["locals"], "user" | "supabase">;
+    } as unknown as Pick<APIContext["locals"], "user" | "supabase">;
 
     const response = await GET({ locals } as APIContext);
     const data = await response.json();
@@ -69,7 +70,7 @@ describe("GET /api/flashcards", () => {
     const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: null,
-    } as Pick<APIContext["locals"], "user" | "supabase">;
+    } as unknown as Pick<APIContext["locals"], "user" | "supabase">;
 
     const response = await GET({ locals } as APIContext);
     const data = await response.json();
@@ -95,7 +96,7 @@ describe("GET /api/flashcards", () => {
     const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: mockSupabase,
-    } as Pick<APIContext["locals"], "user" | "supabase">;
+    } as unknown as Pick<APIContext["locals"], "user" | "supabase">;
 
     const response = await GET({ locals } as APIContext);
     const data = await response.json();
@@ -121,7 +122,7 @@ describe("GET /api/flashcards", () => {
     const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: mockSupabase,
-    } as Pick<APIContext["locals"], "user" | "supabase">;
+    } as unknown as Pick<APIContext["locals"], "user" | "supabase">;
 
     const response = await GET({ locals } as APIContext);
     const data = await response.json();
@@ -176,7 +177,7 @@ describe("POST /api/flashcards", () => {
     const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: mockSupabase,
-    } as Pick<APIContext["locals"], "user" | "supabase">;
+    } as unknown as Pick<APIContext["locals"], "user" | "supabase">;
 
     const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(vi.fn());
 
@@ -201,7 +202,7 @@ describe("POST /api/flashcards", () => {
     const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: {},
-    } as Pick<APIContext["locals"], "user" | "supabase">;
+    } as unknown as Pick<APIContext["locals"], "user" | "supabase">;
 
     const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(vi.fn());
     const consoleErrorSpy = vi
@@ -238,7 +239,7 @@ describe("POST /api/flashcards", () => {
     const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: {},
-    } as Pick<APIContext["locals"], "user" | "supabase">;
+    } as unknown as Pick<APIContext["locals"], "user" | "supabase">;
 
     const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(vi.fn());
     const consoleErrorSpy = vi
@@ -275,7 +276,7 @@ describe("POST /api/flashcards", () => {
     const locals = {
       user: null,
       supabase: {},
-    } as Pick<APIContext["locals"], "user" | "supabase">;
+    } as unknown as Pick<APIContext["locals"], "user" | "supabase">;
 
     const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(vi.fn());
     const consoleErrorSpy = vi
@@ -312,7 +313,7 @@ describe("POST /api/flashcards", () => {
     const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: null,
-    } as Pick<APIContext["locals"], "user" | "supabase">;
+    } as unknown as Pick<APIContext["locals"], "user" | "supabase">;
 
     const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(vi.fn());
     const consoleErrorSpy = vi
@@ -329,5 +330,118 @@ describe("POST /api/flashcards", () => {
       consoleLogSpy.mockRestore();
       consoleErrorSpy.mockRestore();
     }
+  });
+});
+
+describe("DELETE /api/flashcards/:id", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+
+  it("should delete flashcard for authenticated user", async () => {
+    const maybeSingleMock = vi
+      .fn()
+      .mockResolvedValue({ data: { id: 14 }, error: null });
+
+    const eqMock = vi.fn();
+    const selectMock = vi
+      .fn()
+      .mockReturnValue({ maybeSingle: maybeSingleMock });
+    const queryBuilder = { eq: eqMock, select: selectMock };
+    eqMock.mockReturnValue(queryBuilder);
+
+    const mockSupabase = {
+      from: vi.fn().mockReturnValue({
+        delete: vi.fn().mockReturnValue(queryBuilder),
+      }),
+    };
+
+    const response = await DELETE({
+      params: { flashcardId: "14" },
+      locals: {
+        user: { id: "user-123", email: "test@example.com" },
+        supabase: mockSupabase,
+      },
+    } as unknown as APIContext);
+
+    expect(response.status).toBe(204);
+    expect(mockSupabase.from).toHaveBeenCalledWith("flashcards");
+    expect(eqMock).toHaveBeenNthCalledWith(1, "id", 14);
+    expect(eqMock).toHaveBeenNthCalledWith(2, "user_id", "user-123");
+    expect(selectMock).toHaveBeenCalledWith("id");
+    expect(maybeSingleMock).toHaveBeenCalledTimes(1);
+  });
+
+  it("should return 404 when flashcard does not exist", async () => {
+    const maybeSingleMock = vi
+      .fn()
+      .mockResolvedValue({ data: null, error: null });
+
+    const eqMock = vi.fn();
+    const selectMock = vi
+      .fn()
+      .mockReturnValue({ maybeSingle: maybeSingleMock });
+    const queryBuilder = { eq: eqMock, select: selectMock };
+    eqMock.mockReturnValue(queryBuilder);
+
+    const mockSupabase = {
+      from: vi.fn().mockReturnValue({
+        delete: vi.fn().mockReturnValue(queryBuilder),
+      }),
+    };
+
+    const response = await DELETE({
+      params: { flashcardId: "99" },
+      locals: {
+        user: { id: "user-123", email: "test@example.com" },
+        supabase: mockSupabase,
+      },
+    } as unknown as APIContext);
+
+    expect(response.status).toBe(404);
+    const payload = await response.json();
+    expect(payload.error).toBe("Flashcard not found.");
+  });
+
+  it("should return 400 for invalid flashcard id", async () => {
+    const response = await DELETE({
+      params: { flashcardId: "abc" },
+      locals: {
+        user: { id: "user-123", email: "test@example.com" },
+        supabase: {},
+      },
+    } as unknown as APIContext);
+
+    expect(response.status).toBe(400);
+    const payload = await response.json();
+    expect(payload.error).toContain("Flashcard id must be a positive integer.");
+  });
+
+  it("should return 401 when user is not authenticated", async () => {
+    const response = await DELETE({
+      params: { flashcardId: "10" },
+      locals: {
+        user: null,
+        supabase: {},
+      },
+    } as unknown as APIContext);
+
+    expect(response.status).toBe(401);
+    const payload = await response.json();
+    expect(payload.error).toContain("Unauthorized");
+  });
+
+  it("should return 500 when supabase is not initialized", async () => {
+    const response = await DELETE({
+      params: { flashcardId: "10" },
+      locals: {
+        user: { id: "user-123", email: "test@example.com" },
+        supabase: null,
+      },
+    } as unknown as APIContext);
+
+    expect(response.status).toBe(500);
+    const payload = await response.json();
+    expect(payload.error).toContain("Supabase client is not initialized");
   });
 });
