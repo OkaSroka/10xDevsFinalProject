@@ -12,7 +12,10 @@ export class LoginFormPage {
 
   constructor(page: Page) {
     this.page = page;
-    this.emailInput = new InputField(page, '[data-test-id="login-email-input"]');
+    this.emailInput = new InputField(
+      page,
+      '[data-test-id="login-email-input"]',
+    );
     this.passwordInput = new InputField(
       page,
       '[data-test-id="login-password-input"]',

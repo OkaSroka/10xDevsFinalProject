@@ -222,7 +222,6 @@ export class GenerationService {
       .single();
 
     if (error || !data) {
-      // eslint-disable-next-line no-console
       console.error(
         "Database error in persistGeneration:",
         error,
@@ -250,7 +249,6 @@ export class GenerationService {
     });
 
     if (error) {
-      // eslint-disable-next-line no-console
       console.error("Failed to log generation error.", error);
     }
   }
@@ -280,7 +278,6 @@ export class GenerationService {
     });
 
     if (error) {
-      // eslint-disable-next-line no-console
       console.error("Failed to persist usage metrics.", error);
     }
   }

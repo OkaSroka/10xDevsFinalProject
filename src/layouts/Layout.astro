@@ -43,9 +43,7 @@ const isAuthPage = currentPath.startsWith("/auth/");
                   data-test-id="layout-home-link"
                   href="/"
                   class={`text-sm font-medium transition-all hover:text-cyan-300 ${
-                    currentPath === "/"
-                      ? "text-cyan-400"
-                      : "text-white/90"
+                    currentPath === "/" ? "text-cyan-400" : "text-white/90"
                   }`}
                 >
                   Home

@@ -20,8 +20,6 @@ type FormStatus =
   | { type: "error"; message: string }
   | { type: "success"; message: string };
 
-const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
-
 export function SignupForm() {
   const [values, setValues] = useState({
     email: "",
@@ -115,7 +113,7 @@ export function SignupForm() {
           "Konto utworzone pomyślnie! Sprawdź swoją skrzynkę email i potwierdź adres, aby się zalogować.",
       });
       setIsSubmitting(false);
-    } catch (error) {
+    } catch {
       setStatus({
         type: "error",
         message: "Wystąpił błąd połączenia. Spróbuj ponownie później.",
@@ -201,15 +199,15 @@ export function SignupForm() {
               <div className="relative">
                 <Input
                   id="signup-password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                autoComplete="new-password"
-                placeholder="Wybierz hasło"
-                value={values.password}
-                data-test-id="signup-password-input"
-                onChange={handleChange("password")}
-                onBlur={handleBlur("password")}
-                aria-invalid={shouldShowError("password")}
+                  name="password"
+                  type={showPassword ? "text" : "password"}
+                  autoComplete="new-password"
+                  placeholder="Wybierz hasło"
+                  value={values.password}
+                  data-test-id="signup-password-input"
+                  onChange={handleChange("password")}
+                  onBlur={handleBlur("password")}
+                  aria-invalid={shouldShowError("password")}
                   aria-describedby="signup-password-helper"
                   className="pr-10"
                 />
@@ -277,15 +275,15 @@ export function SignupForm() {
               <div className="relative">
                 <Input
                   id="signup-password-confirm"
-                name="confirmPassword"
-                type={showConfirmPassword ? "text" : "password"}
-                autoComplete="new-password"
-                placeholder="Powtórz hasło"
-                value={values.confirmPassword}
-                data-test-id="signup-confirm-password-input"
-                onChange={handleChange("confirmPassword")}
-                onBlur={handleBlur("confirmPassword")}
-                aria-invalid={shouldShowError("confirmPassword")}
+                  name="confirmPassword"
+                  type={showConfirmPassword ? "text" : "password"}
+                  autoComplete="new-password"
+                  placeholder="Powtórz hasło"
+                  value={values.confirmPassword}
+                  data-test-id="signup-confirm-password-input"
+                  onChange={handleChange("confirmPassword")}
+                  onBlur={handleBlur("confirmPassword")}
+                  aria-invalid={shouldShowError("confirmPassword")}
                   aria-describedby="signup-password-confirm-helper"
                   className="pr-10"
                 />

@@ -121,7 +121,10 @@ export function UpdatePasswordForm() {
       aria-labelledby="update-password-title"
       data-test-id="update-password-form-section"
     >
-      <Card className="bg-transparent px-5" data-test-id="update-password-form-card">
+      <Card
+        className="bg-transparent px-5"
+        data-test-id="update-password-form-card"
+      >
         <CardHeader className="px-0 pt-0">
           <CardTitle
             id="update-password-title"

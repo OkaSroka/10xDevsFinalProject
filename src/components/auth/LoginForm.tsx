@@ -97,7 +97,7 @@ export function LoginForm() {
       setTimeout(() => {
         window.location.href = "/";
       }, 1000);
-    } catch (error) {
+    } catch {
       setStatus({
         type: "error",
         message: "Wystąpił błąd połączenia. Spróbuj ponownie później.",
