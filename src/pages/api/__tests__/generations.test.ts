@@ -43,12 +43,14 @@ describe("POST /api/generations", () => {
       }),
     });
 
-    const locals: any = {
+    const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: mockSupabase,
-    };
+    } as Pick<APIContext["locals"], "user" | "supabase">;
 
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(vi.fn());
 
     try {
       // Note: This test might fail if it tries to actually call the AI service
@@ -70,12 +72,14 @@ describe("POST /api/generations", () => {
       body: "invalid json",
     });
 
-    const locals: any = {
+    const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: {},
-    };
+    } as Pick<APIContext["locals"], "user" | "supabase">;
 
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(vi.fn());
 
     try {
       const response = await POST({ request, locals } as APIContext);
@@ -97,12 +101,14 @@ describe("POST /api/generations", () => {
       }),
     });
 
-    const locals: any = {
+    const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: {},
-    };
+    } as Pick<APIContext["locals"], "user" | "supabase">;
 
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(vi.fn());
 
     try {
       const response = await POST({ request, locals } as APIContext);
@@ -125,12 +131,14 @@ describe("POST /api/generations", () => {
       }),
     });
 
-    const locals: any = {
+    const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: {},
-    };
+    } as Pick<APIContext["locals"], "user" | "supabase">;
 
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(vi.fn());
 
     try {
       const response = await POST({ request, locals } as APIContext);
@@ -150,12 +158,14 @@ describe("POST /api/generations", () => {
       body: JSON.stringify({}),
     });
 
-    const locals: any = {
+    const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: {},
-    };
+    } as Pick<APIContext["locals"], "user" | "supabase">;
 
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(vi.fn());
 
     try {
       const response = await POST({ request, locals } as APIContext);
@@ -177,12 +187,14 @@ describe("POST /api/generations", () => {
       }),
     });
 
-    const locals: any = {
+    const locals = {
       user: null,
       supabase: {},
-    };
+    } as Pick<APIContext["locals"], "user" | "supabase">;
 
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(vi.fn());
 
     try {
       const response = await POST({ request, locals } as APIContext);
@@ -204,12 +216,14 @@ describe("POST /api/generations", () => {
       }),
     });
 
-    const locals: any = {
+    const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: {},
-    };
+    } as Pick<APIContext["locals"], "user" | "supabase">;
 
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(vi.fn());
 
     try {
       const response = await POST({ request, locals } as APIContext);

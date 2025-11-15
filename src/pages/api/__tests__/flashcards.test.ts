@@ -38,10 +38,10 @@ describe("GET /api/flashcards", () => {
       }),
     };
 
-    const locals: any = {
+    const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: mockSupabase,
-    };
+    } as Pick<APIContext["locals"], "user" | "supabase">;
 
     const response = await GET({ locals } as APIContext);
     const data = await response.json();
@@ -53,10 +53,10 @@ describe("GET /api/flashcards", () => {
   });
 
   it("should return 401 when user is not authenticated", async () => {
-    const locals: any = {
+    const locals = {
       user: null,
       supabase: {},
-    };
+    } as Pick<APIContext["locals"], "user" | "supabase">;
 
     const response = await GET({ locals } as APIContext);
     const data = await response.json();
@@ -66,10 +66,10 @@ describe("GET /api/flashcards", () => {
   });
 
   it("should return 500 when supabase is not initialized", async () => {
-    const locals: any = {
+    const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: null,
-    };
+    } as Pick<APIContext["locals"], "user" | "supabase">;
 
     const response = await GET({ locals } as APIContext);
     const data = await response.json();
@@ -92,10 +92,10 @@ describe("GET /api/flashcards", () => {
       }),
     };
 
-    const locals: any = {
+    const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: mockSupabase,
-    };
+    } as Pick<APIContext["locals"], "user" | "supabase">;
 
     const response = await GET({ locals } as APIContext);
     const data = await response.json();
@@ -118,10 +118,10 @@ describe("GET /api/flashcards", () => {
       }),
     };
 
-    const locals: any = {
+    const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: mockSupabase,
-    };
+    } as Pick<APIContext["locals"], "user" | "supabase">;
 
     const response = await GET({ locals } as APIContext);
     const data = await response.json();
@@ -173,12 +173,12 @@ describe("POST /api/flashcards", () => {
       }),
     });
 
-    const locals: any = {
+    const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: mockSupabase,
-    };
+    } as Pick<APIContext["locals"], "user" | "supabase">;
 
-    const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(vi.fn());
 
     try {
       const response = await POST({ request, locals } as APIContext);
@@ -198,13 +198,15 @@ describe("POST /api/flashcards", () => {
       body: "invalid json",
     });
 
-    const locals: any = {
+    const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: {},
-    };
+    } as Pick<APIContext["locals"], "user" | "supabase">;
 
-    const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(vi.fn());
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(vi.fn());
 
     try {
       const response = await POST({ request, locals } as APIContext);
@@ -233,13 +235,15 @@ describe("POST /api/flashcards", () => {
       }),
     });
 
-    const locals: any = {
+    const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: {},
-    };
+    } as Pick<APIContext["locals"], "user" | "supabase">;
 
-    const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(vi.fn());
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(vi.fn());
 
     try {
       const response = await POST({ request, locals } as APIContext);
@@ -268,13 +272,15 @@ describe("POST /api/flashcards", () => {
       }),
     });
 
-    const locals: any = {
+    const locals = {
       user: null,
       supabase: {},
-    };
+    } as Pick<APIContext["locals"], "user" | "supabase">;
 
-    const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(vi.fn());
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(vi.fn());
 
     try {
       const response = await POST({ request, locals } as APIContext);
@@ -303,13 +309,15 @@ describe("POST /api/flashcards", () => {
       }),
     });
 
-    const locals: any = {
+    const locals = {
       user: { id: "user-123", email: "test@example.com" },
       supabase: null,
-    };
+    } as Pick<APIContext["locals"], "user" | "supabase">;
 
-    const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const consoleLogSpy = vi.spyOn(console, "log").mockImplementation(vi.fn());
+    const consoleErrorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(vi.fn());
 
     try {
       const response = await POST({ request, locals } as APIContext);
