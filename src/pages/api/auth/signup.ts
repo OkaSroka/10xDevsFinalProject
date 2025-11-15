@@ -53,11 +53,12 @@ export const POST: APIRoute = async ({ request, cookies, locals }) => {
     });
 
     const siteUrl = getSiteUrl(request, runtimeEnv);
+    const emailRedirectTo = new URL("/auth/login", siteUrl).toString();
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        emailRedirectTo: `${siteUrl}/auth/login`,
+        emailRedirectTo,
       },
     });
 
