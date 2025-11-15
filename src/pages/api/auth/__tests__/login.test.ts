@@ -39,9 +39,11 @@ describe("POST /api/auth/login", () => {
     });
 
     const cookies = {} as APIContext["cookies"];
+    const locals = {} as APIContext["locals"];
     const response = await POST({
       request,
       cookies,
+      locals,
     } as APIContext);
     const data = await response.json();
 
@@ -64,9 +66,11 @@ describe("POST /api/auth/login", () => {
     });
 
     const cookies = {} as APIContext["cookies"];
+    const locals = {} as APIContext["locals"];
     const response = await POST({
       request,
       cookies,
+      locals,
     } as APIContext);
     const data = await response.json();
 
@@ -86,9 +90,11 @@ describe("POST /api/auth/login", () => {
     });
 
     const cookies = {} as APIContext["cookies"];
+    const locals = {} as APIContext["locals"];
     const response = await POST({
       request,
       cookies,
+      locals,
     } as APIContext);
     const data = await response.json();
 
@@ -113,9 +119,11 @@ describe("POST /api/auth/login", () => {
     });
 
     const cookies = {} as APIContext["cookies"];
+    const locals = {} as APIContext["locals"];
     const response = await POST({
       request,
       cookies,
+      locals,
     } as APIContext);
     const data = await response.json();
 
