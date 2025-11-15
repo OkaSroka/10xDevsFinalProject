@@ -1,6 +1,6 @@
 import { defineMiddleware } from "astro:middleware";
 import {
-  supabaseClient,
+  createSupabaseClient,
   createSupabaseServerInstance,
 } from "../db/supabase.client";
 
@@ -21,8 +21,11 @@ const PUBLIC_API_PATHS = [
 
 export const onRequest = defineMiddleware(
   async ({ locals, cookies, url, request, redirect }, next) => {
+    // Get Cloudflare runtime env (undefined in local dev)
+    const runtimeEnv = locals.runtime?.env;
+
     // Make supabase available in all routes
-    locals.supabase = supabaseClient;
+    locals.supabase = createSupabaseClient(runtimeEnv);
 
     // Skip auth check for API endpoints
     if (PUBLIC_API_PATHS.includes(url.pathname)) {
@@ -35,7 +38,7 @@ export const onRequest = defineMiddleware(
     }
 
     // Create server instance for session verification
-    const supabase = createSupabaseServerInstance({
+    const supabase = createSupabaseServerInstance(runtimeEnv, {
       cookies,
       headers: request.headers,
     });
