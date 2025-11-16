@@ -149,7 +149,7 @@ if (user) {
 ### Problem: "Missing required environment variables"
 **Rozwiązanie:** Sprawdź czy plik `.env` istnieje i zawiera `SUPABASE_URL` oraz `SUPABASE_KEY`
 
-### Problem: "Invalid email or password" przy poprawnych danych
+### Problem: "Nieprawidłowy adres email lub hasło" przy poprawnych danych
 **Rozwiązanie:** 
 1. Sprawdź czy użytkownik istnieje w panelu Supabase (Authentication → Users)
 2. Upewnij się, że email został potwierdzony (jeśli masz włączone potwierdzanie)

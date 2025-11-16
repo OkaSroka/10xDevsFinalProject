@@ -55,7 +55,7 @@ describe("POST /api/auth/login", () => {
     });
   });
 
-  it("should return 400 for invalid email", async () => {
+  it("should return 400 for Nieprawidłowy adres email", async () => {
     const request = new Request("http://localhost/api/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -76,7 +76,7 @@ describe("POST /api/auth/login", () => {
 
     expect(response.status).toBe(400);
     expect(data.code).toBe("VALIDATION_ERROR");
-    expect(data.error).toContain("Invalid email");
+    expect(data.error).toContain("Nieprawidłowy adres email");
   });
 
   it("should return 400 for short password", async () => {
@@ -128,6 +128,6 @@ describe("POST /api/auth/login", () => {
     const data = await response.json();
 
     expect(response.status).toBe(401);
-    expect(data.error).toBe("Invalid email or password");
+    expect(data.error).toBe("Nieprawidłowy adres email lub hasło");
   });
 });

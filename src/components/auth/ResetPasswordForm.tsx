@@ -143,6 +143,7 @@ export function ResetPasswordForm() {
                 onBlur={() => setTouched(true)}
                 aria-invalid={shouldShowError}
                 aria-describedby="reset-email-helper"
+                disabled={isSubmitting}
               />
               <p
                 id="reset-email-helper"
@@ -159,6 +160,7 @@ export function ResetPasswordForm() {
               data-test-id="reset-password-submit-button"
               className="cursor-pointer w-full rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 text-base font-semibold text-white shadow-lg shadow-cyan-500/30 transition hover:translate-y-0.5"
               disabled={isSubmitting}
+              loading={isSubmitting}
             >
               {isSubmitting ? "Wysyłanie..." : "Wyślij instrukcje"}
             </Button>
