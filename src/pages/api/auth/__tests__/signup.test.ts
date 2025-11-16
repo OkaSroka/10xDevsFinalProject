@@ -59,7 +59,7 @@ describe("POST /api/auth/signup", () => {
     });
   });
 
-  it("should return 400 for invalid email", async () => {
+  it("should return 400 for Nieprawidłowy adres email", async () => {
     const request = new Request("http://localhost/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -80,7 +80,7 @@ describe("POST /api/auth/signup", () => {
 
     expect(response.status).toBe(400);
     expect(data.code).toBe("VALIDATION_ERROR");
-    expect(data.error).toContain("Invalid email");
+    expect(data.error).toContain("Nieprawidłowy adres email");
   });
 
   it("should return 400 for short password", async () => {
@@ -107,7 +107,7 @@ describe("POST /api/auth/signup", () => {
     expect(data.error).toContain("at least 8 characters");
   });
 
-  it("should return 400 when user already exists", async () => {
+  it("should return 400 when user Konto z tym adresem email już istnieje", async () => {
     mockSignUp.mockResolvedValue({
       data: { user: null },
       error: {
@@ -136,7 +136,7 @@ describe("POST /api/auth/signup", () => {
 
     expect(response.status).toBe(400);
     expect(data.code).toBe("USER_EXISTS");
-    expect(data.error).toContain("already exists");
+    expect(data.error).toContain("Konto z tym adresem email już istnieje");
   });
 
   it("should return 400 on other auth errors", async () => {

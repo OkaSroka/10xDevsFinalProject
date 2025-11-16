@@ -153,7 +153,7 @@ test.describe("Login Form", () => {
     await expect(loginPage.passwordInput.locator).toBeVisible();
   });
 
-  test("should show validation error with invalid email format", async ({
+  test("should show validation error with Nieprawidłowy adres email format", async ({
     page,
   }) => {
     await loginPage.emailInput.fill("invalid-email");
@@ -163,7 +163,7 @@ test.describe("Login Form", () => {
     // Wait for React to process submission
     await page.waitForTimeout(1000);
 
-    // Just verify we're still on the login page (invalid email prevented submission)
+    // Just verify we're still on the login page (Nieprawidłowy adres email prevented submission)
     const currentUrl = page.url();
     expect(currentUrl).toContain("/auth/login");
 
