@@ -178,6 +178,7 @@ export function SignupForm() {
                 onBlur={handleBlur("email")}
                 aria-invalid={shouldShowError("email")}
                 aria-describedby="signup-email-helper"
+                disabled={isSubmitting}
               />
               <p
                 id="signup-email-helper"
@@ -210,6 +211,7 @@ export function SignupForm() {
                   aria-invalid={shouldShowError("password")}
                   aria-describedby="signup-password-helper"
                   className="pr-10"
+                  disabled={isSubmitting}
                 />
                 <button
                   type="button"
@@ -286,6 +288,7 @@ export function SignupForm() {
                   aria-invalid={shouldShowError("confirmPassword")}
                   aria-describedby="signup-password-confirm-helper"
                   className="pr-10"
+                  disabled={isSubmitting}
                 />
                 <button
                   type="button"
@@ -348,6 +351,7 @@ export function SignupForm() {
               data-test-id="signup-submit-button"
               className="cursor-pointer w-full rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 text-base font-semibold text-white shadow-lg shadow-cyan-500/30 transition hover:translate-y-0.5"
               disabled={isSubmitting}
+              loading={isSubmitting}
             >
               {isSubmitting ? "Tworzenie konta..." : "Załóż konto"}
             </Button>

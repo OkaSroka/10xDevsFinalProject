@@ -3,7 +3,7 @@ import { createSupabaseServerInstance } from "../../../db/supabase.client";
 import { z } from "zod";
 
 const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.string().email("Nieprawidłowy adres email"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
@@ -43,7 +43,7 @@ export const POST: APIRoute = async ({ request, cookies, locals }) => {
     if (error) {
       return new Response(
         JSON.stringify({
-          error: "Invalid email or password",
+          error: "Nieprawidłowy adres email lub hasło",
           code: error.code || "AUTH_ERROR",
         }),
         { status: 401 },

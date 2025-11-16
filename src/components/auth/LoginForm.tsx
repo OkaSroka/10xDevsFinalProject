@@ -162,6 +162,7 @@ export function LoginForm() {
                 aria-describedby="login-email-helper"
                 onChange={handleChange("email")}
                 onBlur={handleBlur("email")}
+                disabled={isSubmitting}
               />
               <p
                 id="login-email-helper"
@@ -200,6 +201,7 @@ export function LoginForm() {
                 aria-describedby="login-password-helper"
                 onChange={handleChange("password")}
                 onBlur={handleBlur("password")}
+                disabled={isSubmitting}
               />
               <p
                 id="login-password-helper"
@@ -216,6 +218,7 @@ export function LoginForm() {
               data-test-id="login-submit-button"
               className="cursor-pointer w-full rounded-full bg-gradient-to-r from-cyan-500 via-blue-500 to-indigo-500 text-base font-semibold text-white shadow-lg shadow-cyan-500/30 transition hover:translate-y-0.5"
               disabled={isSubmitting}
+              loading={isSubmitting}
             >
               {isSubmitting ? "Logowanie..." : "Zaloguj się"}
             </Button>

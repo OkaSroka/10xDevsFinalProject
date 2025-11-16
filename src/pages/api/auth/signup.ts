@@ -20,7 +20,7 @@ function getSiteUrl(
 }
 
 const signupSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.string().email("Nieprawidłowy adres email"),
   password: z.string().min(8, "Password must be at least 8 characters"),
 });
 
@@ -66,7 +66,7 @@ export const POST: APIRoute = async ({ request, cookies, locals }) => {
       if (error.message.includes("already registered")) {
         return new Response(
           JSON.stringify({
-            error: "An account with this email already exists",
+            error: "Konto z tym adresem email już istnieje",
             code: "USER_EXISTS",
           }),
           { status: 400 },

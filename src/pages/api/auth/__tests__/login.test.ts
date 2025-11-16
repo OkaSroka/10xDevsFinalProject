@@ -128,6 +128,6 @@ describe("POST /api/auth/login", () => {
     const data = await response.json();
 
     expect(response.status).toBe(401);
-    expect(data.error).toBe("Invalid email or password");
+    expect(data.error).toBe("Nieprawidłowy adres email lub hasło");
   });
 });

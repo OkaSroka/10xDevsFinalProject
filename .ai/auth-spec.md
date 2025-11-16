@@ -57,15 +57,15 @@
 - Validate non-empty, correctly formatted emails before issuing requests.
 - Enforce password length (>=8 chars) and confirmation equality.
 - Display inline helper text:
-  - "Invalid email address."
-  - "Password must contain at least 8 characters."
-  - "Passwords do not match."
+  - "Nieprawidłowy adres email."
+  - "Hasło musi zawierać co najmniej 8 znaków."
+  - "Hasła nie pasują do siebie."
 
 ### 3.2 Server-side
 
 - Use schema validation (Zod or equivalent) to reject malformed payloads with HTTP 400.
-- Sign-up enforces unique emails; responds with "An account with this email already exists."
-- Login failures respond with "Invalid email or password." without revealing which field failed.
+- Sign-up enforces unique emails; responds with "Konto z tym adresem email już istnieje."
+- Login failures respond with "Nieprawidłowy adres email lub hasło." without revealing which field failed.
 - Errors bubble back as JSON `{ status, code, message }`, enabling UI components to map them to localized copy.
 
 ## 4. Backend Logic

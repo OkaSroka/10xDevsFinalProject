@@ -20,7 +20,7 @@ function getSiteUrl(
 }
 
 const resetPasswordSchema = z.object({
-  email: z.string().email("Invalid email address"),
+  email: z.string().email("Nieprawidłowy adres email"),
 });
 
 export const prerender = false;

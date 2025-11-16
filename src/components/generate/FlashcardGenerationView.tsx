@@ -395,7 +395,7 @@ export function FlashcardGenerationView() {
 
   return (
     <div
-      className="space-y-10 text-white"
+      className="space-y-10 text-white pb-12"
       data-test-id="flashcard-generation-view"
     >
       <section
